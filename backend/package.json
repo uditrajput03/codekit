@@ -1,0 +1,21 @@
+{
+  "scripts": {
+    "dev": "wrangler dev src/index.ts",
+    "deploy": "wrangler deploy --minify src/index.ts"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^0.9.1",
+    "@prisma/adapter-neon": "^5.13.0",
+    "@prisma/client": "^5.13.0",
+    "hono": "^4.3.2",
+    "typescript": "^5.4.5",
+    "ws": "^8.17.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240403.0",
+    "@types/ws": "^8.5.10",
+    "prisma": "^5.13.0",
+    "tsc": "^2.0.4",
+    "wrangler": "^3.47.0"
+  }
+}
