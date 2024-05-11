@@ -146,8 +146,7 @@ app.post('newsletter', async (c) => {
     if (error.code = "P2002") {
       return c.json({
         status: "Already exist"
-      })
-
+      },201)
     }
     console.log(error);
     return c.json({
