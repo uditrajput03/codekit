@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Orders" ALTER COLUMN "cfOrderId" SET DATA TYPE TEXT;
