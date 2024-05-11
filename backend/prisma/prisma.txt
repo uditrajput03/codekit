@@ -35,9 +35,8 @@ model Orders {
   productId        Int
   user             User     @relation(fields: [userId], references: [id])
   userId           Int
-  orderStatus      Status   @default(ACTIVE)
-  paymentStatus    String?
-  cfOrderId        String?
+  orderStatus      Status   @default(CREATED)
+  cfOrderId        Int?
   paymentSessionId String?
 }
 
@@ -59,6 +58,7 @@ model NewsLetter {
 }
 
 enum Status {
+  CREATED
   ACTIVE
   PAID
   EXPIRED

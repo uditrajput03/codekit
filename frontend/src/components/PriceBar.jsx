@@ -2,7 +2,6 @@ import { useState } from "react"
 
 export default function PriceBar({ setCard , cardData }) {
     const [active, setActive] = useState("frontend")
-    console.log("card datat " , cardData);
     return (<>
         <div className="mb-8">
             {/* <div class="sm:hidden">

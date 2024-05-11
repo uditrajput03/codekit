@@ -1,30 +1,34 @@
 import { Hono } from 'hono'
 import { decode, sign, verify } from 'hono/jwt'
-import { env } from 'hono/adapter'
 import { PrismaClient } from '@prisma/client'
-import { Pool, neonConfig } from '@neondatabase/serverless'
-import { PrismaNeon } from '@prisma/adapter-neon'
-import ws from 'ws'
-import { authCheck } from './middleware'
-import { FileWatcherEventKind } from 'typescript'
+import { authCheck, getPrisma } from './middleware'
 import { cors } from 'hono/cors'
 import { logger } from 'hono/logger'
-neonConfig.webSocketConstructor = ws
-const connectionString = `url`
+import pay from './payment'
+import { webhook } from './webhook'
 
-const pool = new Pool({ connectionString })
-const adapter = new PrismaNeon(pool)
-const prisma = new PrismaClient({ adapter })
+type Bindings = {
+  JWT_SECRET: string
+  DATABASE_URL: string
+  BOT_TOKEN: string
+}
+type Variables = {
+  prisma: PrismaClient
+}
 
-const app = new Hono()
+const app = new Hono<{ Bindings: Bindings, Variables: Variables }>()
 app.use(logger())
 app.use(cors())
+app.use(getPrisma)
 app.use('/auth/*', authCheck)
+app.route('/webhook', webhook)
+app.route('/auth/pay', pay)
 app.get('/', async (c: any) => {
-  return c.text(`Hello Hono! `)
+  return c.text(`Hello Codekit`)
 })
 app.get('/auth/profile', async (c) => {
   let jwtData = c.get('jwtPayload')
+  const prisma = c.var.prisma
   try {
     let profile = await prisma.user.findUnique({
       where: {
@@ -52,7 +56,9 @@ app.get('/auth', async (c) => {
 })
 
 app.post('/login', async (c) => {
-  const body:any = await c.req.parseBody()
+  const body: any = await c.req.parseBody()
+  const prisma = c.var.prisma
+
   console.log(body);
   try {
     let out = await prisma.user.findUnique({
@@ -89,9 +95,10 @@ app.post('/login', async (c) => {
 })
 
 app.post('/signup', async (c) => {
-  const body:any = await c.req.parseBody()
+  const body: any = await c.req.parseBody()
+  const prisma = c.var.prisma
   console.log(body);
-  
+
   try {
     let out = await prisma.user.create({
       data: {
@@ -102,7 +109,7 @@ app.post('/signup', async (c) => {
       }
     })
     console.log(out);
-    
+
     const jwt = await sign({ email: out.email, id: out.id }, c.env.JWT_SECRET)
     return c.json({
       status: "Account Created successfully",
@@ -124,6 +131,7 @@ app.post('/signup', async (c) => {
 })
 
 app.post('newsletter', async (c) => {
+  const prisma = c.var.prisma
   try {
     let inputEmail = await c.req.json()
     let a = await prisma.newsLetter.create({
@@ -147,5 +155,56 @@ app.post('newsletter', async (c) => {
     }, 400)
   }
 })
+
+app.post('/contact', async c => {
+  // const body = await c.req.json()
+  const body = await c.req.parseBody()
+  try {
+  let data = {
+    chat_id: "-1002045554223",
+    text: `Source: Codekit
+email: ${body.email}
+subject: ${body.subject}
+message: ${body.message}`
+  }
+    let telegram: any = await fetch(`https://api.telegram.org/bot${c.env.BOT_TOKEN}/sendMessage`, {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data)
+    }).then(res => res.json()).then(res => res)
+    if (telegram.ok == true) {
+      return c.json({
+        id: "id"
+      }, 200)
+    }
+    else {
+      return c.text("Something went wrong", 400)
+    }
+  } catch (error) {
+    return c.text("Something went wrong", 400)
+  }
+})
+// app.post('/create' , async (c) => {
+//   let body = await c.req.json()
+//   const prisma = c.var.prisma
+//   try {
+//     let productId = await prisma.product.create({
+//       data :{
+//         title: body.title,
+//         description: body.description,
+//         price: body.price,
+//         published: true
+//       }
+//     })
+//     return c.json({
+//       status: productId
+//     })
+
+//   } catch (error) {
+//     console.log(error);
+//   }
+// })
 
 export default app

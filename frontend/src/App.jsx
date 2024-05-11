@@ -1,4 +1,4 @@
-import { useState , lazy, Suspense } from 'react'
+import { useState, lazy, Suspense, useEffect, useCallback } from 'react'
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import './App.css'
 import Home from './pages/Home'
@@ -8,19 +8,53 @@ import Explore from './pages/Explore'
 import NavBar from './components/NavBar'
 import Dashboard from './pages/Dashboard'
 function App() {
-  const [login , setLogin] = useState(false)
-  const About = lazy(()=> import("./pages/About"))
+  const [login, setLoginState] = useState(false)
+  const About = lazy(() => import("./pages/About"))
+  const Payment = lazy(() => import("./pages/Payment"))
+  const Contact = lazy(() => import('./pages/Contact'))
+
+  const setLogin = useCallback((bool) => {
+    setLoginState(bool)
+  } ,[])
+  useEffect(() => {
+    // const loginState = localStorage.getItem('loginState')
+    // if(loginState == 'true') return
+    const token = localStorage.getItem('token')
+    if (token != null) {
+      fetch(import.meta.env.VITE_BACKEND + "/auth", {
+        method: "get",
+        headers: {
+          authorization: token
+        }
+      })
+        .then(res => res.json())
+        .then((res) => {
+          if (res.email != null) {
+            localStorage.setItem('loginState', true)
+            setLogin(true)
+          }
+          else {
+            console.log(res.status);
+          }
+        })
+        .catch(() => {
+          alert("Something went wrong try again later")
+        })
+    }
+  }, [])
   return (
     <>
       <BrowserRouter>
         <Routes >
           <Route path="/">
             <Route index element={<Home login={login} setLogin={setLogin} />} />
-            <Route path="login" element={<Login login={login} setLogin={setLogin}/>}/>
-            <Route path="signup" element={<Signup login={login} setLogin={setLogin}/>}/>
-            <Route path="explore" element={<Explore/>}/>
-            <Route path="dashboard" element={<Dashboard login={login} setLogin={setLogin}/>}/>
-            <Route path="about" element={<Suspense fallback={"Loading..."}> <About /> </Suspense>}/>
+            <Route path="login" element={<Login login={login} setLogin={setLogin} />} />
+            <Route path="signup" element={<Signup login={login} setLogin={setLogin} />} />
+            <Route path="explore" element={<Explore />} />
+            <Route path="dashboard" element={<Dashboard login={login} setLogin={setLogin} />} />
+            <Route path="about" element={<Suspense fallback={"Loading..."}> <About /> </Suspense>} />
+            <Route path="payment" element={<Suspense fallback={"Loading..."}> <Payment login={login} setLogin={setLogin}/> </Suspense>} />
+            <Route path="contact" element={<Suspense fallback={"Loading..."}> <Contact login={login}/> </Suspense>} />
           </Route>
         </Routes>
       </BrowserRouter>

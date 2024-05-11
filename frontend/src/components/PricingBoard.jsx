@@ -3,28 +3,28 @@ import PriceBar from "./PriceBar"
 import { useState } from "react"
 export default function PricingBoard({pricingRef}){
     const [cardData, setCardData] = useState({
-        frontend: {
+        frontend: {id:1,
             title: "Frontend", description: "Best option for personal use & for your next project.", price: 3500, specs: ["Individual configuration"
                 , "No setup, or hidden fees"
                 , "Team size: 1 developer"
                 , "Premium support: 6 months"
                 , "Free updates: 6 months"]
         },
-        backend: {
+        backend: {id:2,
             title: "Backend", description: "Best option for personal use & for your next project.", price: 5000, specs: ["Individual configuration"
                 , "No setup, or hidden fees"
                 , "Team size: 1 developer"
                 , "Premium support: 6 months"
                 , "Free updates: 6 months"]
         },
-        fullstack: {
+        fullstack: {id:3,
             title: "FullStack", description: "Best option for personal use & for your next project.", price: 8000, specs: ["Individual configuration"
                 , "No setup, or hidden fees"
                 , "Team size: 1 developer"
                 , "Premium support: 6 months"
                 , "Free updates: 6 months"]
         },
-        nextjs: {
+        nextjs: {id:4,
             title: "NextJS", description: "Best option for personal use & for your next project.", price: 10000, specs: ["Individual configuration"
                 , "No setup, or hidden fees"
                 , "Team size: 1 developer"
