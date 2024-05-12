@@ -15,6 +15,7 @@ export default function Payment({ login, setLogin, productId = 1, card = {
 } }) {
     const navigate = useNavigate()
     const { state } = useLocation()
+    if(state)
     card = state
     console.log("CARERER", state);
     const { id, title, description, price, specs } = card

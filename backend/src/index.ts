@@ -50,6 +50,34 @@ app.get('/auth/profile', async (c) => {
   }
 }
 )
+app.get('/auth/orders', async (c) => {
+  let jwtData = c.get('jwtPayload')
+  const prisma = c.var.prisma
+  try {
+    let orders = await prisma.orders.findMany({
+      where: {
+        userId: jwtData.id,
+        completed: true
+      },
+      select: {
+        id: true,
+        createdAt:true,
+        product:{
+          select:{
+            title: true
+          }
+        },
+        paid: true,
+      }
+    })
+    return c.json(orders)
+  } catch (error) {
+    return c.json({
+      status: "Somthing went wrong"
+    }, 400)
+  }
+}
+)
 app.get('/auth', async (c) => {
   let jwtData = c.get('jwtPayload')
   return c.json(jwtData)

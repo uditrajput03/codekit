@@ -1,24 +1,24 @@
-export default function About() {
-    return (<>
-        About
-        <div class="border-gray-300 h-5 w-5 animate-spin rounded-full border-2 border-t-blue-600" />
-        <div class="border-gray-300 h-20 w-20 animate-spin rounded-full border-8 border-t-blue-600" />
+import Footer from "../components/Footer";
+import NavBar from "../components/NavBar";
 
-        <div class='flex space-x-2 justify-center items-center bg-white h-wscreen dark:invert'>
- 	<span class='sr-only'>Loading...</span>
-  	<div class='h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.3s]'></div>
-	<div class='h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.15s]'></div>
-	<div class='h-8 w-8 bg-black rounded-full animate-bounce'></div>
-</div>
-
-<div class="min-h-60 flex flex-col bg-white border shadow-sm rounded-xl dark:bg-neutral-800 dark:border-neutral-700 dark:shadow-neutral-700/70">
-  <div class="flex flex-auto flex-col justify-center items-center p-4 md:p-5">
-    <div class="flex justify-center">
-      <div class="animate-spin inline-block size-6 border-[3px] border-current border-t-transparent text-blue-600 rounded-full dark:text-blue-500" role="status" aria-label="loading">
-        <span class="sr-only">Loading...</span>
-      </div>
+export default function About({ login }) {
+  return (<>
+    <NavBar login={login} />
+    <div className="flex mt-10 sm:w-2/3 m-auto justify-center flex-col">
+      <h1 className="text-3xl font-bold my-5">About</h1>
+      <p className="mx-5">
+        We are no a team, this site comes under UR Technoligies which is a propriotership and comes under solopreniurship.
+      </p>
+      <h1 className="text-2xl font-semibold my-5">About author</h1>
+      <p className="mx-5">I am a freelancer web developer, Content and boilerplate code of this website is written by me. It is a side project done by me , SaaS code present in this site is often used by me during my freelance journey. It helps me develop faster and ship my product in some days to my clients.</p>
+      <h1 className="text-2xl font-semibold my-5">Motivation</h1>
+      <p className="mx-5">Although , these SaaS helps to ship fast but you have to know the underlying code to tweak this boilerplate, Peoples keep telling about not to use the boilerplates as it decreases the learning curve</p>
+      <p className="mx-5">But according to me if we know the code ones and how it works, after that implementing it again and again is a time waste similar to using github copilot, If I know atlast I am able to solve any problem in a time frame of suppose maximum 2 days, Then why not to use these AI tools and boilerplates to improve efficiency and ship code faster. </p>
+      <h1 className="text-2xl font-semibold my-5">Outcome</h1>
+      <p className="mx-5">Implementing same code again and again for days leads to burnout in thr coding world.</p>
+      <p className="mx-5">It is advicable to use boilerplate for the same repeating code to maintain the consistency and security of the codebase.</p>
+      <p className="mx-5">Best outcome of this is you keep improving day by day without thinking of the same again and again used boaring code. Apart from saving the time we can use it to learn new technoligies like AI and machine Learning</p>
     </div>
-  </div>
-</div>
-    </>)
+    <Footer />
+  </>)
 }

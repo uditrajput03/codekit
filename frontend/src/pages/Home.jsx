@@ -5,6 +5,7 @@ import ServiceBoard from '../components/ServiceBoard'
 import NewsLetter from '../components/NewsLetter'
 import Footer from '../components/Footer'
 import { useRef, useState } from 'react'
+import Faq from '../components/Faq'
 export default function Home({ login, setLogin }) {
     const [alert, setAlert] = useState()
     const pricingRef = useRef(null)
@@ -21,6 +22,7 @@ export default function Home({ login, setLogin }) {
                 <Hero login={login} pricingRef={pricingRef}></Hero>
                 <PricingBoard login={login} pricingRef={pricingRef}></PricingBoard>
                 <ServiceBoard login={login}></ServiceBoard>
+                <Faq></Faq>
                 <NewsLetter setAlert={setAlert}></NewsLetter>
                 <Footer></Footer>
             </div>

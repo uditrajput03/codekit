@@ -1,4 +1,4 @@
-import { memo,useState } from "react"
+import { memo, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 export default memo(function NavBar({ login, setLogin }) {
     const navigate = useNavigate()
@@ -6,16 +6,18 @@ export default memo(function NavBar({ login, setLogin }) {
     return <>
         <nav className="text-black">
             <div className="grid h-16 sm:grid-cols-3 items-center gap-3 sm:gap-0">
-            {/* <div className="flex h-16 flex-row justify-around items-center"> */}
-                <div className="flex flex-row justify-center sdm:mr-12">
-                    <h1 className="text-black text text-2xl">Code</h1>
-                    <h1 className="text-violet-800 font-semibold text text-2xl">Kit</h1>
-                </div>
+                {/* <div className="flex h-16 flex-row justify-around items-center"> */}
+                <Link to={'/'}>
+                    <div className="flex flex-row justify-center sdm:mr-12">
+                        <h1 className="text-black text text-2xl">Code</h1>
+                        <h1 className="text-violet-800 font-semibold text text-2xl">Kit</h1>
+                    </div>
+                </Link>
                 <div className="flex justify-center">
                     <Link to={"/"}>
                         <li className="px-3">Home</li>
                     </Link>
-                    <Link to={"/dashboard"}>
+                    <Link to={"/explore"}>
                         <li className="px-3">Explore</li>
                     </Link>
                     <Link to={"/about"}>

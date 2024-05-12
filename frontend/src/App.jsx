@@ -4,7 +4,6 @@ import './App.css'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
-import Explore from './pages/Explore'
 import NavBar from './components/NavBar'
 import Dashboard from './pages/Dashboard'
 function App() {
@@ -12,6 +11,10 @@ function App() {
   const About = lazy(() => import("./pages/About"))
   const Payment = lazy(() => import("./pages/Payment"))
   const Contact = lazy(() => import('./pages/Contact'))
+  const Terms = lazy(() => import('./pages/Terms'))
+  const Privacy = lazy(() => import('./pages/Privacy'))
+  const Explore = lazy(() => import('./pages/Explore'))
+
 
   const setLogin = useCallback((bool) => {
     setLoginState(bool)
@@ -50,11 +53,13 @@ function App() {
             <Route index element={<Home login={login} setLogin={setLogin} />} />
             <Route path="login" element={<Login login={login} setLogin={setLogin} />} />
             <Route path="signup" element={<Signup login={login} setLogin={setLogin} />} />
-            <Route path="explore" element={<Explore />} />
             <Route path="dashboard" element={<Dashboard login={login} setLogin={setLogin} />} />
+            <Route path="explore" element={<Suspense fallback={"Loading..."}> <Explore /> </Suspense>} />
             <Route path="about" element={<Suspense fallback={"Loading..."}> <About /> </Suspense>} />
             <Route path="payment" element={<Suspense fallback={"Loading..."}> <Payment login={login} setLogin={setLogin}/> </Suspense>} />
             <Route path="contact" element={<Suspense fallback={"Loading..."}> <Contact login={login}/> </Suspense>} />
+            <Route path="terms" element={<Suspense fallback={"Loading..."}> <Terms login={login}/> </Suspense>} />
+            <Route path="privacy" element={<Suspense fallback={"Loading..."}> <Privacy login={login}/> </Suspense>} />
           </Route>
         </Routes>
       </BrowserRouter>
