@@ -23,7 +23,7 @@ export default function Dashboard({login , setLogin}){
     return(<>
     <NavBar login={login} setLogin={setLogin}/>
     <div className="bg-white min-h-screen py-10">
-        <div className="flex w-full bg-white gap-4">
+        <div className="flex flex-col sm:flex-row w-full bg-white gap-4">
             <DashNav active={active} setActive={setActive} />
             <div className="flex-auto">
             <DashCard profile={profile} active={active}/>

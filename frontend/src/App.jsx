@@ -20,8 +20,8 @@ function App() {
     setLoginState(bool)
   } ,[])
   useEffect(() => {
-    // const loginState = localStorage.getItem('loginState')
-    // if(loginState == 'true') return
+    const loginState = localStorage.getItem('loginState')
+    if(loginState == 'true') setLogin(true)
     const token = localStorage.getItem('token')
     if (token != null) {
       fetch(import.meta.env.VITE_BACKEND + "/auth", {
@@ -38,9 +38,12 @@ function App() {
           }
           else {
             console.log(res.status);
+            setLogin(false)
+            localStorage.setItem('loginState', false)
           }
         })
         .catch(() => {
+          setLogin(false)
           alert("Something went wrong try again later")
         })
     }
@@ -54,8 +57,8 @@ function App() {
             <Route path="login" element={<Login login={login} setLogin={setLogin} />} />
             <Route path="signup" element={<Signup login={login} setLogin={setLogin} />} />
             <Route path="dashboard" element={<Dashboard login={login} setLogin={setLogin} />} />
-            <Route path="explore" element={<Suspense fallback={"Loading..."}> <Explore /> </Suspense>} />
-            <Route path="about" element={<Suspense fallback={"Loading..."}> <About /> </Suspense>} />
+            <Route path="explore" element={<Suspense fallback={"Loading..."}> <Explore login={login}/> </Suspense>} />
+            <Route path="about" element={<Suspense fallback={"Loading..."}> <About login={login}/> </Suspense>} />
             <Route path="payment" element={<Suspense fallback={"Loading..."}> <Payment login={login} setLogin={setLogin}/> </Suspense>} />
             <Route path="contact" element={<Suspense fallback={"Loading..."}> <Contact login={login}/> </Suspense>} />
             <Route path="terms" element={<Suspense fallback={"Loading..."}> <Terms login={login}/> </Suspense>} />

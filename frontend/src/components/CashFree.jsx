@@ -20,16 +20,16 @@ export default async function CashFree(setLoading, setAlert, productId = 1) {
 
     cashfree.checkout(checkoutOptions).then((result) => {
         if (result.error) {
-            setAlert(<div class="p-4 my-4 text-sm text-red-800 rounded-lg bg-red-50  " role="alert">
-                <span class="font-medium">Error: </span>Something went wrong. Please try again later
+            setAlert(<div className="p-4 my-4 text-sm text-red-800 rounded-lg bg-red-50  " role="alert">
+                <span className="font-medium">Error: </span>Something went wrong. Please try again later
             </div>)
             console.log("User has closed the popup or there is some payment error, Check for Payment Status");
             console.log(result.error);
         }
         if (result.redirect) {
             setAlert(
-                <div class="p-4 my-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 " role="alert">
-                    <span class="font-medium">Warning: </span> {res.status}
+                <div className="p-4 my-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 " role="alert">
+                    <span className="font-medium">Warning: </span> {res.status}
                 </div>
             )
             // This will be true when the payment redirection page couldnt be opened in the same window
@@ -39,8 +39,8 @@ export default async function CashFree(setLoading, setAlert, productId = 1) {
         }
         if (result.paymentDetails) {
             setAlert(
-                <div class="p-4 my-4 text-sm text-green-800 rounded-lg bg-green-100 " role="alert">
-                    <span class="font-medium">Success: </span> Payment successful, You order will be available in you <a className='underline font-semibold' href="/dashboard">dashboard</a> or will be proceessed under 24 hours.
+                <div className="p-4 my-4 text-sm text-green-800 rounded-lg bg-green-100 " role="alert">
+                    <span className="font-medium">Success: </span> Payment successful, You order will be available in you <a className='underline font-semibold' href="/dashboard">dashboard</a> or will be proceessed under 24 hours.
                 </div>
             )
             // This will be called whenever the payment is completed irrespective of transaction status

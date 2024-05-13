@@ -5,12 +5,12 @@ export default function Privacy({ login }) {
 
     return (<>
         <NavBar login={login} />
-        <div className="flex mt-10 sm:w-2/3 m-auto justify-center flex-col">
-            <h1 className="text-3xl font-bold my-5">Privacy Policy</h1>
+        <div className="flex mt-10 sm:w-2/3 w-4/5 m-auto justify-center flex-col">
+            <h1 className="text-3xl sm:mt-0 mt-14 font-bold my-5">Privacy Policy</h1>
             <p className="mx-5">
-                [Your Company Name] operates the [Your Website Name] website, which provides web boilerplate SaaS code for front end, backend, and full stack development, as well as custom plans for customized designed and styled websites.
+                UR Technologies operates the codekit.me website, which provides web boilerplate SaaS code for front end, backend, and full stack development, as well as custom plans for customized designed and styled websites.
 
-                This page is used to inform website visitors regarding our policies with the collection, use, and disclosure of Personal Information if anyone decided to use our Service, the [Your Website Name] website.
+                This page is used to inform website visitors regarding our policies with the collection, use, and disclosure of Personal Information if anyone decided to use our Service, the codekit.me website.
 
                 If you choose to use our Service, then you agree to the collection and use of information in relation to this policy. The Personal Information that we collect is used for providing and improving the Service. We will not use or share your information with anyone except as described in this Privacy Policy.
             </p>
@@ -62,15 +62,15 @@ export default function Privacy({ login }) {
 
             <h1 className="text-2xl font-semibold my-5">Acceptance of Terms</h1>
             <p className="mx-5">
-                By using the services provided by [Your Company Name] on the [Your Website Name] website, you agree to be bound by these Terms and Conditions.
+                By using the services provided by UR Technologies on the codekit.me website, you agree to be bound by these Terms and Conditions.
             </p>
             <h1 className="text-2xl font-semibold my-5">Modifications to the Services and Prices</h1>
             <p className="mx-5">
-                [Your Company Name] reserves the right to modify or discontinue, temporarily or permanently, the services (or any part thereof) with or without notice at any time. Prices of all services are subject to change upon 30 days notice from us.
+                UR Technologies reserves the right to modify or discontinue, temporarily or permanently, the services (or any part thereof) with or without notice at any time. Prices of all services are subject to change upon 30 days notice from us.
             </p>
             <h1 className="text-2xl font-semibold my-5">Intellectual Property</h1>
             <p className="mx-5">
-                All code, designs, and content provided by [Your Company Name] remain the intellectual property of [Your Company Name] and may not be resold or redistributed without permission.
+                All code, designs, and content provided by UR Technologies remain the intellectual property of UR Technologies and may not be resold or redistributed without permission.
             </p>
             <h1 className="text-2xl font-semibold my-5">Customer Responsibilities</h1>
             <p className="mx-5">
@@ -86,7 +86,7 @@ export default function Privacy({ login }) {
             </p>
             <h1 className="text-2xl font-semibold my-5">Limitation of Liability</h1>
             <p className="mx-5">
-                [Your Company Name] shall not be liable for any direct, indirect, incidental, special, or consequential damages resulting from the use or inability to use any of the services provided.
+                UR Technologies shall not be liable for any direct, indirect, incidental, special, or consequential damages resulting from the use or inability to use any of the services provided.
             </p>
             <h1 className="text-2xl font-semibold my-5">Governing Law</h1>
             <p className="mx-5">

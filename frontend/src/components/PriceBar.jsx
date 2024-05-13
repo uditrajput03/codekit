@@ -4,9 +4,9 @@ export default function PriceBar({ setCard , cardData }) {
     const [active, setActive] = useState("frontend")
     return (<>
         <div className="mb-8">
-            {/* <div class="sm:hidden">
-                <label for="tabs" class="sr-only">Select your template</label>
-                <select id="tabs" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+            {/* <div className="sm:hidden">
+                <label for="tabs" className="sr-only">Select your template</label>
+                <select id="tabs" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
                     <option>Frontend</option>
                     <option>Backend</option>
                     <option>Full Stach</option>

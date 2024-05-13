@@ -1,7 +1,8 @@
 {
   "scripts": {
     "dev": "wrangler dev src/index.ts",
-    "deploy": "wrangler deploy --minify src/index.ts --outdir dist"
+    "deploy": "wrangler deploy --minify src/index.ts --outdir dist",
+    "page":"wrangler pages deploy ../frontend/dist/"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.9.1",

@@ -2,7 +2,7 @@ import { useState } from "react"
 
 export default function DashNav({active , setActive}) {
     return (<>
-        <div className="flex flex-col gap-2">
+        <div className="flex justify-center sm:justify-normal sm:flex-col gap-2">
             <button onClick={() => {
                 // setCard(cardData.fullstack)
                 setActive("profile")

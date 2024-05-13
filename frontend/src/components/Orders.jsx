@@ -18,8 +18,8 @@ export default function Orders() {
             { order !=null ? order.map((order) => {
                 let create = new Date(order.createdAt);
                 return (
-                    <div className="flex justify-evenly px-10 py-5 border-b-[1px] border-gray-300">
-                        <div>
+                    <div className="flex sm:justify-evenly px-2 gap-5 sm:gap-0 sm:px-10 py-5 border-b-[1px] border-gray-300">
+                        <div className="w-1/2">
                             <div className="font-semibold">Order id: {order.id}</div>
                             <div className="font-semibold">Title:</div>
                             <div className="text-2xl font-light uppercase">{order.product.title}</div>

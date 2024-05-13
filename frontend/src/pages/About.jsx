@@ -4,8 +4,8 @@ import NavBar from "../components/NavBar";
 export default function About({ login }) {
   return (<>
     <NavBar login={login} />
-    <div className="flex mt-10 sm:w-2/3 m-auto justify-center flex-col">
-      <h1 className="text-3xl font-bold my-5">About</h1>
+    <div className="flex mt-10 sm:w-2/3 w-4/5 m-auto justify-center flex-col">
+      <h1 className="text-3xl sm:mt-0 mt-14 font-bold my-5">About</h1>
       <p className="mx-5">
         We are no a team, this site comes under UR Technoligies which is a propriotership and comes under solopreniurship.
       </p>

@@ -4,7 +4,7 @@ import Profile from "./Profile";
 export default function DashCard({active , profile}) {
     if (active == 'profile') {
     return (<>
-        <div className="flex justify-center flex-grow flex-col px-10">
+        <div className="flex justify-center flex-grow sm:flex-col px-10">
         <Profile profile={profile}/>
         </div>
     </>)        
