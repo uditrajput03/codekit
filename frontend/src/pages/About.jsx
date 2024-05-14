@@ -7,7 +7,7 @@ export default function About({ login }) {
     <div className="flex mt-10 sm:w-2/3 w-4/5 m-auto justify-center flex-col">
       <h1 className="text-3xl sm:mt-0 mt-14 font-bold my-5">About</h1>
       <p className="mx-5">
-        We are no a team, this site comes under UR Technoligies which is a propriotership and comes under solopreniurship.
+        We are no a team, I am an individual Udit Rajput and this site may refers UR Technoligies which comes under solopreniurship.
       </p>
       <h1 className="text-2xl font-semibold my-5">About author</h1>
       <p className="mx-5">I am a freelancer web developer, Content and boilerplate code of this website is written by me. It is a side project done by me , SaaS code present in this site is often used by me during my freelance journey. It helps me develop faster and ship my product in some days to my clients. If any query related to business contact me on <a className="underline text-blue-800" href="mailto:admin@codekit.me">admin@codekit.me</a></p>

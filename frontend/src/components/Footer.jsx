@@ -15,10 +15,13 @@ export default function Footer(){
             <a href="/privacy" className="hover:underline me-4 md:me-6">Privacy Policy</a>
         </li>
         <li>
-            <a href="/terms" className="hover:underline me-4 md:me-6">Terms of Service</a>
+            <a href="/terms" className="hover:underline me-4 md:me-6">Terms & Conditions</a>
         </li>
         <li>
-            <a href="/contact" className="hover:underline">Contact</a>
+            <a href="/refund" className="hover:underline me-4 md:me-6">Refund Policy</a>
+        </li>
+        <li>
+            <a href="/contact" className="hover:underline">Contact Us</a>
         </li>
     </ul>
     </div>
