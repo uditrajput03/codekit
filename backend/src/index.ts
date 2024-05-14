@@ -6,6 +6,7 @@ import { cors } from 'hono/cors'
 import { logger } from 'hono/logger'
 import pay from './payment'
 import { webhook } from './webhook'
+import pass from './password'
 
 type Bindings = {
   JWT_SECRET: string
@@ -23,6 +24,7 @@ app.use(getPrisma)
 app.use('/auth/*', authCheck)
 app.route('/webhook', webhook)
 app.route('/auth/pay', pay)
+app.route('/password', pass)
 app.get('/', async (c: any) => {
   return c.text(`Hello Codekit`)
 })
