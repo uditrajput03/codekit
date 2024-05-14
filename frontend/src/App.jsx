@@ -14,7 +14,10 @@ function App() {
   const Contact = lazy(() => import('./pages/Contact'))
   const Terms = lazy(() => import('./pages/Terms'))
   const Privacy = lazy(() => import('./pages/Privacy'))
+  const Refund = lazy(() => import('./pages/Refund'))
   const Explore = lazy(() => import('./pages/Explore'))
+  const Forget = lazy(() => import('./pages/Forget'))
+  const ChangePassword = lazy(() => import('./pages/ChangePassword'))
 
 
   const setLogin = useCallback((bool) => {
@@ -57,6 +60,8 @@ function App() {
             <Route index element={<Home login={login} setLogin={setLogin} />} />
             <Route path="login" element={<Login login={login} setLogin={setLogin} />} />
             <Route path="signup" element={<Signup login={login} setLogin={setLogin} />} />
+            <Route path="forget" element={<Suspense fallback={<Spinner />}><Forget login={login} setLogin={setLogin} /> </Suspense>} />
+            <Route path="reset/:token" element={<Suspense fallback={<Spinner />}><ChangePassword login={login} setLogin={setLogin} /> </Suspense>} />
             <Route path="dashboard" element={<Dashboard login={login} setLogin={setLogin} />} />
             <Route path="explore" element={<Suspense fallback={<Spinner />}> <Explore login={login}/> </Suspense>} />
             <Route path="about" element={<Suspense fallback={<Spinner />}> <About login={login}/> </Suspense>} />
@@ -64,6 +69,7 @@ function App() {
             <Route path="contact" element={<Suspense fallback={<Spinner />}> <Contact login={login}/> </Suspense>} />
             <Route path="terms" element={<Suspense fallback={<Spinner />}> <Terms login={login}/> </Suspense>} />
             <Route path="privacy" element={<Suspense fallback={<Spinner />}> <Privacy login={login}/> </Suspense>} />
+            <Route path="refund" element={<Suspense fallback={<Spinner />}> <Refund login={login}/> </Suspense>} />
           </Route>
         </Routes>
       </BrowserRouter>

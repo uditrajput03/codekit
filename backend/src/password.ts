@@ -21,9 +21,8 @@ pass.use(cors())
 pass.use(getPrisma)
 pass.post('/forget', async (c) => {
     const prisma = c.var.prisma
-    const body: any = await c.req.json()
+    const body: any = await c.req.parseBody()
     const { email } = body
-
     try {
         let user = await prisma.user.findUnique({
             where: {
@@ -81,7 +80,7 @@ pass.post('/forget', async (c) => {
 
 pass.post('/reset', async (c) => {
     const prisma = c.var.prisma
-    const body: any = await c.req.json()
+    const body: any = await c.req.parseBody()
     const { token, password } = body
     try {
         let { id }: any = await verify(token, c.env.JWT_SECRET)

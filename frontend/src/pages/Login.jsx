@@ -72,7 +72,7 @@ export default function Login({ login, setLogin }) {
                                             <label for="remember" className="text-gray-500 ">Remember me</label>
                                         </div>
                                     </div>
-                                    <a href="#" className="text-sm font-medium text-zinc-600 hover:underline ">Forgot password?</a>
+                                    <a href="/forget" className="text-sm font-medium text-zinc-600 hover:underline ">Forgot password?</a>
                                 </div>
                                 {/* <button type="submit" className="w-full text-white bg-zinc-600 hover:bg-zinc-700 focus:ring-4 focus:outline-none focus:ring-zinc-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center   ">Login</button> */}
                                 <button type="submit" className={`${loading ? "bg-zinc-300 hover:bg-zinc-400" : "bg-zinc-600 hover:bg-zinc-700"} justify-center items-center flex w-full text-white  focus:ring-4 focus:outline-none focus:ring-zinc-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center`}>
