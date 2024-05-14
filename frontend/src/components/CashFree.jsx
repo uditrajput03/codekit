@@ -11,7 +11,7 @@ export default async function CashFree(setLoading, setAlert, productId = 1) {
         .then((res) => res.json())
         .then((res) => res.res.payment_session_id)
     const cashfree = await load({
-        mode: "sandbox" //or production
+        mode: "production" //or production
     });
     let checkoutOptions = {
         paymentSessionId: session,

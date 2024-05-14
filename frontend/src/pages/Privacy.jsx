@@ -88,10 +88,6 @@ export default function Privacy({ login }) {
             <p className="mx-5">
                 UR Technologies shall not be liable for any direct, indirect, incidental, special, or consequential damages resulting from the use or inability to use any of the services provided.
             </p>
-            <h1 className="text-2xl font-semibold my-5">Governing Law</h1>
-            <p className="mx-5">
-                These Terms and Conditions shall be governed by and construed in accordance with the laws of [Your Country], without regard to its conflict of law provisions.
-            </p>
         </div>
         <Footer />
     </>)

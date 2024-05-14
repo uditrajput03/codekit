@@ -213,6 +213,10 @@ message: ${body.message}`
     return c.text("Something went wrong", 400)
   }
 })
+
+app.get('/verify/:token', async c => {})
+
+
 // app.post('/create' , async (c) => {
 //   let body = await c.req.json()
 //   const prisma = c.var.prisma

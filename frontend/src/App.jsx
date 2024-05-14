@@ -6,6 +6,7 @@ import Login from './pages/Login'
 import Signup from './pages/Signup'
 import NavBar from './components/NavBar'
 import Dashboard from './pages/Dashboard'
+import Spinner from './components/Spinner'
 function App() {
   const [login, setLoginState] = useState(false)
   const About = lazy(() => import("./pages/About"))
@@ -57,12 +58,12 @@ function App() {
             <Route path="login" element={<Login login={login} setLogin={setLogin} />} />
             <Route path="signup" element={<Signup login={login} setLogin={setLogin} />} />
             <Route path="dashboard" element={<Dashboard login={login} setLogin={setLogin} />} />
-            <Route path="explore" element={<Suspense fallback={"Loading..."}> <Explore login={login}/> </Suspense>} />
-            <Route path="about" element={<Suspense fallback={"Loading..."}> <About login={login}/> </Suspense>} />
-            <Route path="payment" element={<Suspense fallback={"Loading..."}> <Payment login={login} setLogin={setLogin}/> </Suspense>} />
-            <Route path="contact" element={<Suspense fallback={"Loading..."}> <Contact login={login}/> </Suspense>} />
-            <Route path="terms" element={<Suspense fallback={"Loading..."}> <Terms login={login}/> </Suspense>} />
-            <Route path="privacy" element={<Suspense fallback={"Loading..."}> <Privacy login={login}/> </Suspense>} />
+            <Route path="explore" element={<Suspense fallback={<Spinner />}> <Explore login={login}/> </Suspense>} />
+            <Route path="about" element={<Suspense fallback={<Spinner />}> <About login={login}/> </Suspense>} />
+            <Route path="payment" element={<Suspense fallback={<Spinner />}> <Payment login={login} setLogin={setLogin}/> </Suspense>} />
+            <Route path="contact" element={<Suspense fallback={<Spinner />}> <Contact login={login}/> </Suspense>} />
+            <Route path="terms" element={<Suspense fallback={<Spinner />}> <Terms login={login}/> </Suspense>} />
+            <Route path="privacy" element={<Suspense fallback={<Spinner />}> <Privacy login={login}/> </Suspense>} />
           </Route>
         </Routes>
       </BrowserRouter>

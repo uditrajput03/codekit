@@ -61,7 +61,7 @@ export default function Login({ login, setLogin }) {
                                 </div>
                                 <div>
                                     <label for="password" className="block mb-2 text-sm font-medium text-gray-900 ">Password</label>
-                                    <input type="password" name="password" id="password" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-zinc-600 focus:border-zinc-600 block w-full p-2.5      " required="true" />
+                                    <input type="password" name="password" id="password" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-zinc-600 focus:border-zinc-600 block w-full p-2.5      " minlength="8" maxlength="20" required="true" />
                                 </div>
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-start">

@@ -9,7 +9,7 @@ export default function Terms({login, setLogin}) {
             <p className="mx-5">
                 Welcome to CodeKit!
 
-                These terms and conditions outline the rules and regulations for the use of codekit.me's website, located at https://codekit.me.
+                These terms and conditions outline the rules and regulations for the use of codekit.me's website, located at <a className="underline text-blue-800" href="https://codekit.me">https://codekit.me</a>.
 
                 By accessing this website, we assume you accept these terms and conditions. Do not continue to use codekit.me if you do not agree to take all of the terms and conditions stated on this page.
 
@@ -114,11 +114,11 @@ export default function Terms({login, setLogin}) {
             </p>
             <h1 className="mx-5 text-xl font-semibold my-5">Disclaimer for CodeKit</h1>
             <p className="mx-5">
-                If you require any more information or have any questions about our site's disclaimer, please feel free to contact us by email at [Your Email Address].
+                If you require any more information or have any questions about our site's disclaimer, please feel free to contact us by email at <a className="text-blue-800" href="mailto:support@codekit.me">support@codekit.me</a>.
             </p>
             <h1 className="mx-5 text-xl font-semibold my-5">Disclaimers for codekit.me</h1>
             <p className="mx-5">
-                All the information on this website - https://codekit.me - is published in good faith and for general information purpose only. codekit.me does not make any warranties about the completeness, reliability, and accuracy of this information. Any action you take upon the information you find on this website (codekit.me), is strictly at your own risk. codekit.me will not be liable for any losses and/or damages in connection with the use of our website.
+                All the information on this website - <a className="underline text-blue-800" href="https://codekit.me">https://codekit.me</a> - is published in good faith and for general information purpose only. codekit.me does not make any warranties about the completeness, reliability, and accuracy of this information. Any action you take upon the information you find on this website (codekit.me), is strictly at your own risk. codekit.me will not be liable for any losses and/or damages in connection with the use of our website.
 
             </p>
         </div >

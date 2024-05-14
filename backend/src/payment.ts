@@ -8,8 +8,13 @@ import { PrismaClient } from "@prisma/client/extension";
 type Variables = {
     prisma: PrismaClient
 }
+type Bindings = {
+    CASHFREE_CLIENT_SECRET: string
+    CASHFREE_CLIENT_ID: string
+    CASHFREE_LINK: string
+}
 
-const pay = new Hono<{ Variables: Variables }>()
+const pay = new Hono<{Bindings:Bindings , Variables: Variables }>()
 pay.use(logger())
 pay.use(cors())
 pay.use(authCheck)
@@ -50,15 +55,15 @@ pay.post('/order', async (c) => {
                 "customer_email": jwtData.email
             },
             "order_meta": {
-                "return_url": "https://www.cashfree.com/devstudio/preview/pg/web/popupCheckout?order_id={order_id}",
-                "notify_url": "https://backend.lindasmith03.workers.dev/webhook"
+                "return_url": "https://codekit.me/payment",
+                "notify_url": "https://api.codekit.me/webhook"
             }
         }
-        let res = await fetch('https://sandbox.cashfree.com/pg/orders', {
+        let res = await fetch(c.env.CASHFREE_LINK+ '/orders', {
             method: 'post',
             headers: {
-                'x-client-id': 'TEST430329ae80e0f32e41a393d78b923034',
-                'x-client-secret': 'TESTaf195616268bd6202eeb3bf8dc458956e7192a85',
+                'x-client-id': c.env.CASHFREE_CLIENT_ID,
+                'x-client-secret': c.env.CASHFREE_CLIENT_SECRET,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'x-api-version': '2023-08-01',

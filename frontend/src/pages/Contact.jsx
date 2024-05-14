@@ -52,7 +52,10 @@ export default function Contact({ login }) {
                         <label for="message" className="block mb-2 text-sm font-medium text-gray-900 ">Your message</label>
                         <textarea name="message" rows="6" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg shadow-sm border border-gray-300 focus:ring-gray-500 focus:border-gray-500      " placeholder="Leave a comment..." required={true}></textarea>
                     </div>
+                    <div className="flex justify-between items-center">
                     <button type="submit" className="py-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-gray-700 sm:w-fit hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300   ">Send message</button>
+                    <a className="underline text-blue-800 text-lg" href="mailto:support@codekit.me">support@codekit.me</a>
+                    </div>
                 </form>
             </div>
         </section>

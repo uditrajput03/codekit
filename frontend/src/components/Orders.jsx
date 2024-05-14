@@ -30,7 +30,7 @@ export default function Orders() {
                             <div className="text-2xl font-light">₹{order.paid}</div>
                         </div>
                     </div>)
-            }): <div className="text-center">No orders yet</div>}
+            }): <div className="text-center"></div>}
         </div>
     </>)
 }
