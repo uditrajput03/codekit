@@ -1,9 +1,10 @@
 import NavBar from '../components/NavBar'
 import Footer from '../components/Footer'
 import { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 export default function Signup({ login, setLogin }) {
     const [loading, setLoading] = useState(false)
-
+    const navigate = useNavigate()
     const firstNameRef = useRef(null);
     const formRef = useRef(null);
     const lastNameRef = useRef(null);
@@ -36,6 +37,8 @@ export default function Signup({ login, setLogin }) {
                             <span className="font-medium">Success: </span> {res.status} , An activation link has been sent to your email click it to verify your account or <a className="font-medium text-zinc-600 hover:underline " href="#">Resend Activation</a>
                         </div>
                     )
+                    setTimeout(() =>
+                        navigate('/'), 2000)
                 }
                 else {
                     setAlert(
@@ -49,7 +52,10 @@ export default function Signup({ login, setLogin }) {
                     <span className="font-medium">Error: </span>Something went wrong. Please try again later
                 </div>)
             })
-        setLoading(false)
+            .finally(() => {
+                setTimeout(() =>  formRef.current.reset(), 3000)
+                setLoading(false)
+            })
     }
     return (<>
         <NavBar login={login} setLogin={setLogin}></NavBar>

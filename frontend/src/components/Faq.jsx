@@ -22,7 +22,7 @@ export default function Faq() {
                                     </svg>
                                 </span>
                             </summary>
-                            <p className="group-open:animate-fadeIn mt-3 text-neutral-600">Springerdata offers a onetime payment solutions for respective SaaS templates, It may vary for our custome service plan where we price according to the work done on the project. Payment is typically made through UPI or Wallets
+                            <p className="group-open:animate-fadeIn mt-3 text-neutral-600">We offers a onetime payment solutions for respective SaaS templates, It may vary for our custome service plan where we price according to the work done on the project. Payment is typically made through UPI or Wallets
                             </p>
                         </details>
                     </div>
@@ -38,17 +38,16 @@ export default function Faq() {
                                     </svg>
                                 </span>
                             </summary>
-                            <p className="group-open:animate-fadeIn mt-3 text-neutral-600">We do not offer money-back
-                                guarantee for our template code. Refunds for
+                            <p className="group-open:animate-fadeIn mt-3 text-neutral-600">Refunds for
                                 our custom freelance services may be considered on a
-                                case-by-case basis.
+                                case-by-case basis.You can check more about it <a className="text-blue-800 hover:underline" href="/refund">Refund policy</a>
                             </p>
                         </details>
                     </div>
                     <div className="py-5">
                         <details className="group">
                             <summary className="flex cursor-pointer list-none items-center justify-between font-medium">
-                                <span>How the process loooks like</span>
+                                <span>How the process looks like</span>
                                 <span className="transition group-open:rotate-180">
                                     <svg fill="none" height="24" shape-rendering="geometricPrecision"
                                         stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"

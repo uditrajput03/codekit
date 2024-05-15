@@ -38,7 +38,10 @@ export default function Login({ login, setLogin }) {
                     <span className="font-medium">Error: </span>Something went wrong. Please try again later
                 </div>)
             })
-        setLoading(false)
+            .finally(() => {
+                setTimeout(() =>  formRef.current.reset(), 3000)
+                setLoading(false)
+            })
     }
     return (<>
         <NavBar login={login} setLogin={setLogin}></NavBar>
