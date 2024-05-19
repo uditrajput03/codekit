@@ -15,8 +15,8 @@ export default function Payment({ login, setLogin, productId = 1, card = {
 } }) {
     const navigate = useNavigate()
     const { state } = useLocation()
-    if(state)
-    card = state
+    if (state)
+        card = state
     const { id, title, description, price, specs } = card
     const [profile, setProfile] = useState({})
     const [loading, setLoading] = useState(false)
@@ -66,12 +66,11 @@ export default function Payment({ login, setLogin, productId = 1, card = {
                     <Profile profile={profile} />
                     <h1 className="text-xl font-semibold my-5">Payment Options</h1>
                     <button onClick={clickHandler} type="button" className={` text-white ${loading ? "bg-[#050708]/80 hover:bg-[#050708]/70" : "bg-[#050708] hover:bg-[#050708]/90"} hover:bg-[#050708]/90 focuds:ring-4 fodcus:outline-none focsus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 mb-2`}>
-                        <div class={`border-gray-300 ${loading ? "" : "hidden"} animate-spin rounded-full border-2 w-5 h-5 me-2 -ms-1 border-r-zinc-400`} />
+                        <div className={`border-gray-300 ${loading ? "" : "hidden"} animate-spin rounded-full border-2 w-5 h-5 me-2 -ms-1 border-r-zinc-400`} />
                         <img className={`${loading ? "hidden" : ""} w-5 h-5 me-2 -ms-1`} src="https://cashfreelogo.cashfree.com/cashfreepayments/logosvgs/Group_4355.svg" alt="logo" />
                         Pay Now
                     </button>
                 </div>
-
                 <div className='relative overflow-hidden max-w-xs rounded-xl border border-gray-800 p-[1px] backdrop-blur-3xl sm:mb-20 mb-10 mt-10 sm:mt-0'>
                     <span className='absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]' />
                     <div className='backdrop-blur-3xl'>

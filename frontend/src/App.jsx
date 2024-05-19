@@ -41,7 +41,6 @@ function App() {
             setLogin(true)
           }
           else {
-            console.log(res.status);
             setLogin(false)
             localStorage.setItem('loginState', false)
           }

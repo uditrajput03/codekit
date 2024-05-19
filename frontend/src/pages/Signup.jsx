@@ -98,9 +98,9 @@ export default function Signup({ login, setLogin }) {
                                     </div>
                                 </div>
                                 {/* <button type="submit" className="w-full text-white bg-zinc-600 hover:bg-zinc-700 focus:ring-4 focus:outline-none focus:ring-zinc-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center   ">Create an account</button> */}
-                                <button type="submit" class={`justify-center items-center flex w-full text-white ${loading ? "bg-zinc-300 hover:bg-zinc-400" : "bg-zinc-600 hover:bg-zinc-700"} focus:ring-4 focus:outline-none focus:ring-zinc-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center`}>
+                                <button type="submit" className={`justify-center items-center flex w-full text-white ${loading ? "bg-zinc-300 hover:bg-zinc-400" : "bg-zinc-600 hover:bg-zinc-700"} focus:ring-4 focus:outline-none focus:ring-zinc-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center`}>
                                     <button type="submit" className="">Create an account</button>
-                                    <div class={`border-gray-300 ${loading ? "" : "hidden"} ml-2  animate-spin rounded-full border-2 w-4 h-4 border-r-zinc-400`} />
+                                    <div className={`border-gray-300 ${loading ? "" : "hidden"} ml-2  animate-spin rounded-full border-2 w-4 h-4 border-r-zinc-400`} />
                                 </button>
                                 <p className="text-sm font-light text-gray-500 ">
                                     Already have an account? <a href="/login" className="font-medium text-zinc-600 hover:underline ">Login here</a>

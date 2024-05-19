@@ -34,8 +34,10 @@ export default function Forget({ login, setLogin }) {
                     <span className="font-medium">Error: </span>Something went wrong. Please try again later
                 </div>)
             })
-        setLoading(false)
-        formRef.current.reset()
+            .finally(() => {
+                setLoading(false)
+                formRef.current.reset()
+            })
     }
     return (<>
         <NavBar login={login} setLogin={setLogin}></NavBar>
@@ -58,7 +60,7 @@ export default function Forget({ login, setLogin }) {
                                 {/* <button type="submit" className="w-full text-white bg-zinc-600 hover:bg-zinc-700 focus:ring-4 focus:outline-none focus:ring-zinc-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center   ">Login</button> */}
                                 <button type="submit" className={`${loading ? "bg-zinc-300 hover:bg-zinc-400" : "bg-zinc-600 hover:bg-zinc-700"} justify-center items-center flex w-full text-white  focus:ring-4 focus:outline-none focus:ring-zinc-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center`}>
                                     <button type="submit" className="">Send Email</button>
-                                    <div class={`border-gray-300 ${loading ? "" : "hidden"} ml-2  animate-spin rounded-full border-2 w-4 h-4 border-r-zinc-400`} />
+                                    <div className={`border-gray-300 ${loading ? "" : "hidden"} ml-2  animate-spin rounded-full border-2 w-4 h-4 border-r-zinc-400`} />
                                 </button>
                                 <p className="text-sm font-light text-gray-500 ">
                                     Don’t have an account yet? <a href="/signup" className="font-medium text-zinc-600 hover:underline ">Sign up</a>

@@ -12,6 +12,7 @@ type Bindings = {
     CASHFREE_CLIENT_SECRET: string
     CASHFREE_CLIENT_ID: string
     CASHFREE_LINK: string
+    RESEND_API: string
 }
 
 const pay = new Hono<{Bindings:Bindings , Variables: Variables }>()
@@ -92,6 +93,63 @@ pay.post('/order', async (c) => {
         return c.json({
             status: "Something went wrong with payment gateway"
         })
+    }
+})
+
+pay.post('/resend', async (c) => {
+    const prisma = c.var.prisma
+    const body: any = await c.req.json()
+    const { orderId } = body
+    const jwtPayload = await c.get('jwtPayload')
+    try {
+        let order = await prisma.orders.findUnique({
+            where: {
+                id: orderId
+            }
+        })
+        console.log(body, jwtPayload);
+        if (order != null) {
+            let url = `https://codekit.me/download/${orderId}`
+            let mail = {
+                from: "CodeKit <support@codekit.me>",
+                to: jwtPayload.email,
+                subject: "Download Link",
+                text: `Click on the link to download ${url} \n Order details: ${JSON.stringify(order)}`
+            }
+            let res = await fetch('https://api.resend.com/emails', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${c.env.RESEND_API}`
+                },
+                body: JSON.stringify(mail)
+            })
+                .then((res) => res)
+                .catch((error) => {
+                    return c.json({
+                        status: "Something went wrong"
+                    }, 400)
+                })
+            if (res.status == 200) {
+                return c.json({
+                    status: "Download link sent"
+                })
+            }
+            else {
+                return c.json({
+                    status: "Download link not sent"
+                }, 400)
+            }
+        }
+        else {
+            return c.json({
+                status: "Email not found"
+            }, 400)
+        }
+    } catch (error) {
+        return c.json({
+            status: "Somthing went wrong with the server"
+        }, 400)
     }
 })
 export default pay

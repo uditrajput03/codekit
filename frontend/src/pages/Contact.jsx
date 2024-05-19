@@ -7,15 +7,13 @@ export default function Contact({ login }) {
     const formRef = useRef(null)
     function submitHandler(e) {
         e.preventDefault();
-        console.log(new FormData(formRef.current));
         fetch(import.meta.env.VITE_BACKEND + "/contact", {
             method: "post",
             body: new FormData(formRef.current)
         })
             .then(res => res.json())
             .then((res) => {
-                console.log(res);
-                if(res.id='id' || res.status == 200)
+                if (res.id = 'id' || res.status == 200)
                     formRef.current.reset();
                 setAlert(
                     <div className="fixed p-4 my-4 text-sm text-green-800 rounded-lg bg-green-100 " role="alert">
@@ -24,7 +22,6 @@ export default function Contact({ login }) {
                 )
             })
             .catch((e) => {
-                console.log(e);
                 setAlert(<div className="p-4 my-4 text-sm text-red-800 rounded-lg bg-red-50  " role="alert">
                     <span className="font-medium">Error: </span>Something went wrong. Please try again later
                 </div>)
@@ -53,8 +50,13 @@ export default function Contact({ login }) {
                         <textarea name="message" rows="6" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg shadow-sm border border-gray-300 focus:ring-gray-500 focus:border-gray-500      " placeholder="Leave a comment..." required={true}></textarea>
                     </div>
                     <div className="flex justify-between items-center">
-                    <button type="submit" className="py-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-gray-700 sm:w-fit hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300   ">Send message</button>
-                    <a className="underline text-blue-800 text-lg" href="mailto:support@codekit.me">support@codekit.me</a>
+                        <button type="submit" className="py-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-gray-700 sm:w-fit hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300   ">Send message</button>
+                        <div className="ml-5">
+                            <a className="underline text-blue-800 text-lg" href="mailto:support@codekit.me">support@codekit.me</a>
+                            <h1 className="sm:text-xl mt-1">Address:</h1>
+                            <h2 className="font-light text-gray-500">Lig 281, Sonagiri Sector-A Bhopal</h2>
+                            <h2 className="font-light text-gray-500">Madhya Pradesh - 462022</h2>
+                        </div>
                     </div>
                 </form>
             </div>
