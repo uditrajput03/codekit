@@ -72,15 +72,6 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
-      {/* <div className='relative'>
-    <div className="fixed min-h-screen min-w-max inset-0 -z-10  bg-white [background:radial-gradient(125%_125%_at_50%_10%,#fff_40%,#63e_100%)]"></div>
-    <NavBar></NavBar>
-    <Hero></Hero>
-    <PricingBoard></PricingBoard>
-    <ServiceBoard></ServiceBoard>
-    <NewsLetter></NewsLetter>
-    <Footer></Footer>
-    </div> */}
     </>
   )
 }
