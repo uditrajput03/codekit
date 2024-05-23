@@ -6,13 +6,12 @@ export default memo(function NavBar({ login, setLogin }) {
     return <>
         <nav className="text-black">
             <div className="grid h-16 sm:grid-cols-3 my-6 sm:my-0 items-center gap-3 sm:gap-0">
-                {/* <div className="flex h-16 flex-row justify-around items-center"> */}
-                    <Link to={'/'}>
-                        <div className="flex flex-row justify-center">
-                            <h1 className="text-black text text-2xl">Code</h1>
-                            <h1 className="text-violet-800 font-semibold text text-2xl">Kit</h1>
-                        </div>
-                    </Link>
+                <Link to={'/'}>
+                    <div className="flex flex-row justify-center">
+                        <h1 className="text-black text text-2xl">Code</h1>
+                        <h1 className="text-violet-800 font-semibold text text-2xl">Kit</h1>
+                    </div>
+                </Link>
                 <div className="flex justify-center">
                     <Link to={"/"}>
                         <li className="px-3">Home</li>
@@ -38,7 +37,6 @@ export default memo(function NavBar({ login, setLogin }) {
                                     window.location.reload()
                                 }} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Log out</a>
                             </button>
-                            {/* </ul> */}
                         </div>
                     </div>) : (<><Link to={"/login"}>
                         <button type="button" className="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center     ">Login</button>
@@ -46,7 +44,6 @@ export default memo(function NavBar({ login, setLogin }) {
                         <Link to={"/signup"}>
                             <button type="button" className="mx-1 my-1 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5    ">Signup</button>
                         </Link></>)
-
                     }
                 </div>
             </div>

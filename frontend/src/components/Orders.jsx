@@ -57,7 +57,6 @@ export default function Orders() {
         return (<>
         {loading && 
             <div className="fixed inset-0 bg-gray-100 bg-opacity-50 flex items-center justify-center">
-                {/* <div className="w-10 h-10 border-2 border-t-4 border-gray-400 rounded-full animate-spin"></div> */}
             </div>
         }
             <div className='fixed mx-auto'>
