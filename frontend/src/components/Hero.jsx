@@ -7,7 +7,6 @@ export default function Hero({ login, pricingRef }) {
             <div className="flex flex-col max-w-2xl justify-center items-center gap-1">
 
                 <h2 className="text-center text-3xl font-medium text-gray-900 sm:text-6xl">Collection of Modern</h2>
-                {/* <TextShine text="Saas Kit"></TextShine> */}
                 <span className='text-3xl sm:text-6xl font-medium animate-text-gradient inline-flex bg-gradient-to-r from-neutral-900 via-slate-500 to-neutral-500 bg-[200%_auto] bg-clip-text leading-tight text-transparent'>
                     Saas Kit</span>
                 <p className="mt-6 text-center text-lg leading-6 text-gray-600 ">Ready-to-use, Easy to understand, Simply to implement code for your project. All code has proper examples and explaination for easy integration.</p>
