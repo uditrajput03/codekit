@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react"
-
 export default function Profile({ profile }) {
     if (profile.first == undefined || profile.last == undefined || profile.email == undefined || profile.verified == undefined) {
         return (<>
