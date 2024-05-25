@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 const ServiceCard = () => {
   const navigate = useNavigate()
   return (<>
-    <div className='relative overflow-hidden max-w-xs rounded-xl border border-gray-800 p-[1px] backdrop-blur-3xl mb-20'>
-      <span className='absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]' />
-      <div className='backdrop-blur-3xl'>
+    <div className='relative overflow-hidden max-w-xs rounded-xl border border-gray-800 p-[1px] mb-20'>
+      <span className='hidden sm:flex absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]' />
+      <div className='sm:backdrop-blur-3xl'>
         <div className="flex p-2 flex-col justify-center items-center bg-black text-white text-center gap-1 border rounded-xl">
           <h1 className="m-3 text-2xl font-semibold">Custom</h1>
           <p className="font-light text-white sm:text-lg">Get customized solutions</p>
