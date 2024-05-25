@@ -17,7 +17,7 @@ export default function Orders() {
                 if (res.status == 200) {
                     setAlert(
                         <div className="p-4 my-4 text-sm text-green-800 rounded-lg bg-green-100 " role="alert">
-                            <span className="font-medium">Success: </span> Email sent successfully
+                            <span className="font-medium">Success: </span> Download link sent successfully on your email.
                         </div>
                     )
                 } else {
@@ -35,7 +35,7 @@ export default function Orders() {
             })
             .finally(() => {
                 setLoading(false)
-                setTimeout(() => { setAlert(null) }, 3000)
+                setTimeout(() => { setAlert(null) }, 4000)
             })
     }
     useEffect(() => {
