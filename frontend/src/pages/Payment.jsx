@@ -71,9 +71,9 @@ export default function Payment({ login, setLogin, productId = 1, card = {
                         Pay Now
                     </button>
                 </div>
-                <div className='relative overflow-hidden max-w-xs rounded-xl border border-gray-800 p-[1px] backdrop-blur-3xl sm:mb-20 mb-10 mt-10 sm:mt-0'>
-                    <span className='absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]' />
-                    <div className='backdrop-blur-3xl'>
+                <div className='relative overflow-hidden max-w-xs rounded-xl border border-gray-800 p-[1px] sm:mb-20 mb-10 mt-10 sm:mt-0'>
+                    <span className='hidden sm:flex absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]' />
+                    <div className='sm:backdrop-blur-3xl'>
                         <div className="flex py-4 px-7 flex-col justify-center items-center bg-white wrap text-center gap-1 border rounded-xl">
                             <h1 className="m-3 text-2xl font-semibold">{title}</h1>
                             <p className="font-light text-gray-500 sm:text-lg dark:text-gray-400">{description}</p>
