@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-export default function PriceBar({ setCard , cardData }) {
+export default function PriceBar({ setCard, cardData }) {
     const [active, setActive] = useState("frontend")
     return (<>
         <div className="mb-8">
