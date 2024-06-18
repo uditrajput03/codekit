@@ -1,0 +1,13 @@
+name = "backend"
+compatibility_date = "2023-12-01"
+main = "src/index.ts"
+minify = true
+
+[vars]
+#DATABASE_URL = "postgresql://"
+#JWT_SECRET = ""
+#RESEND_API = ""
+#BOT_TOKEN = ""
+#CASHFREE_LINK = "https://api.cashfree.com/pg"
+#CASHFREE_CLIENT_ID = ""
+#CASHFREE_CLIENT_SECRET = ""
