@@ -21,6 +21,8 @@ jobs:
             JWT_SECRET
             RESEND_API
             BOT_TOKEN
+            CASHFREE_LINK
+            CASHFREE_CLIENT_ID
             CASHFREE_CLIENT_SECRET
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
