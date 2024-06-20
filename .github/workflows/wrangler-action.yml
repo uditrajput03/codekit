@@ -16,10 +16,16 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           workingDirectory: "backend"
+          secrets: |
+            DATABASE_URL
+            JWT_SECRET
+            RESEND_API
+            BOT_TOKEN
+            CASHFREE_CLIENT_SECRET
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          RESEND_API: ${{ secrets.RESEND_API_KEY }}
+          RESEND_API: ${{ secrets.RESEND_API }}
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           CASHFREE_LINK: ${{ env.CASHFREE_LINK }}
           CASHFREE_CLIENT_ID: ${{ env.CASHFREE_CLIENT_ID }}
