@@ -170,7 +170,7 @@ app.post('newsletter', async (c) => {
       }
     })
     return c.json({
-      status: "success test 3"
+      status: "success"
     })
   } catch (error: any) {
     if (error.code = "P2002") {
