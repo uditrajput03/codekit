@@ -54,6 +54,7 @@ export default function Contact({ login }) {
                         <div className="ml-5">
                             <a className="underline text-blue-800 text-lg" href="mailto:support@codekit.me">support@codekit.me</a>
                             <h1 className="sm:text-xl mt-1">Address:</h1>
+                            <h2 className="font-light text-gray-70000">Udit Rajput</h2>
                             <h2 className="font-light text-gray-500">Lig 281, Sonagiri Sector-A Bhopal</h2>
                             <h2 className="font-light text-gray-500">Madhya Pradesh - 462022</h2>
                         </div>
