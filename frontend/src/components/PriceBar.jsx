@@ -1,28 +1,38 @@
 import { useState } from "react"
 
 export default function PriceBar({ setCard, cardData }) {
-    const [active, setActive] = useState("frontend")
-    return (<>
-        <div className="mb-8">
-            <div className="flex flex-col sm:flex-row justify-around">
-                <button onClick={() => {
-                    setCard(cardData.frontend)
-                    setActive("frontend")
-                }} className={`px-10 p-4 border-b sm:border-b-0 sm:border-r border-gray-200 sm:rounded-s-lg  ${active == "frontend" ? "bg-gray-100" : "hover:bg-gray-50"}`} aria-current="page">Frontend</button>
-                <button onClick={() => {
-                    setCard(cardData.backend)
-                    setActive("backend")
-                }} className={`px-10 p-4  border-b sm:border-r sm:border-b-0 border-gray-200  hover:text-gray-700  ${active == "backend" ? "bg-gray-100" : "hover:bg-gray-50"} `}>Backend</button>
-                <button onClick={() => {
-                    setCard(cardData.fullstack)
-                    setActive("fullstack")
-                }} className={`px-10 p-4  border-b sm:border-r sm:border-b-0 border-gray-200  hover:text-gray-700 ${active == "fullstack" ? "bg-gray-100" : "hover:bg-gray-50"}`}>FullStack</button>
-                <button onClick={() => {
-                    setCard(cardData.nextjs)
-                    setActive("nextjs")
-                }} className={`px-10 p-4  border-gray-200 sm:rounded-e-lg hover:text-gray-700 border-b sm:border-none ${active == "nextjs" ? "bg-gray-100" : "hover:bg-gray-50"}`}>NextJS</button>
-            </div>
+    const [active, setActive] = useState("backend")
 
+    const items = [
+        { key: "frontend", label: "Frontend" },
+        { key: "backend", label: "Backend" },
+        { key: "fullstack", label: "FullStack" },
+        { key: "nextjs", label: "NextJS" },
+    ]
+
+    return (
+        <div className="mb-10 max-w-2xl mx-auto">
+            <div className="flex flex-wrap justify-center rounded-xl border border-gray-200 bg-gray-50 p-1 gap-1" role="tablist">
+                {items.map(({ key, label }) => (
+                    <button
+                        key={key}
+                        onClick={() => {
+                            setCard(cardData[key])
+                            setActive(key)
+                        }}
+                        className={`flex-1 min-w-[80px] px-4 py-2.5 text-sm font-medium rounded-lg transition-all ${
+                            active === key
+                                ? "bg-white text-gray-900 shadow-sm"
+                                : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                        }`}
+                        role="tab"
+                        aria-selected={active === key}
+                        aria-controls="pricing-card"
+                    >
+                        {label}
+                    </button>
+                ))}
+            </div>
         </div>
-    </>)
+    )
 }

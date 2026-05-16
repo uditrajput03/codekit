@@ -1,116 +1,199 @@
 import NavBar from '../components/NavBar'
 import Footer from '../components/Footer'
-import { useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { AlertSuccess, AlertWarning, AlertError } from '../components/Alert'
+
 export default function Signup({ login, setLogin }) {
     const [loading, setLoading] = useState(false)
+    const [showPassword, setShowPassword] = useState(false)
     const navigate = useNavigate()
-    const firstNameRef = useRef(null);
-    const formRef = useRef(null);
-    const lastNameRef = useRef(null);
-    const emailRef = useRef(null);
-    const passwordRef = useRef(null);
-    const [alert, setAlert] = useState()
+    const formRef = useRef(null)
+    const [alert, setAlert] = useState(null)
 
     const formHandler = (e) => {
+        e.preventDefault()
         setLoading(true)
-        e.preventDefault();
-        // const formData = {
-        //     first: firstNameRef.current.value,
-        //     last: lastNameRef.current.value,
-        //     email: emailRef.current.value,
-        //     password: passwordRef.current.value
-        // }
+        setAlert(null)
+
+        const formData = new FormData(formRef.current)
+        const password = formData.get('password')
+        if (password.length < 8 || password.length > 20) {
+            setAlert(<AlertWarning message="Password must be between 8 and 20 characters" />)
+            setLoading(false)
+            return
+        }
+
         fetch(import.meta.env.VITE_BACKEND + "/signup", {
             method: "post",
-            body: new FormData(formRef.current)
+            body: formData
         })
-            .then(res => {
-                return res.json()
-            })
+            .then(res => res.json())
             .then((res) => {
                 if (res.token != null) {
                     localStorage.setItem("token", res.token)
+                    localStorage.setItem("loginState", "true")
                     setLogin(true)
                     setAlert(
-                        <div className="p-4 my-4 text-sm text-green-800 rounded-lg bg-green-100 " role="alert">
-                            <span className="font-medium">Success: </span> {res.status} , An activation link has been sent to your email click it to verify your account or <a className="font-medium text-zinc-600 hover:underline " href="#">Resend Activation</a>
-                        </div>
+                        <AlertSuccess
+                            message={`${res.status}. An activation link has been sent to your email.`}
+                        />
                     )
-                    setTimeout(() =>
-                        navigate('/'), 2000)
+                    setTimeout(() => navigate('/'), 2000)
+                } else {
+                    setAlert(<AlertWarning message={res.status || "Something went wrong"} />)
                 }
-                else {
-                    setAlert(
-                        <div className="p-4 my-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 " role="alert">
-                            <span className="font-medium">Warning: </span> {res.status}
-                        </div>
-                    )
-                }
-            }).catch((e) => {
-                setAlert(<div className="p-4 my-4 text-sm text-red-800 rounded-lg bg-red-50  " role="alert">
-                    <span className="font-medium">Error: </span>Something went wrong. Please try again later
-                </div>)
+            })
+            .catch(() => {
+                setAlert(<AlertError />)
             })
             .finally(() => {
-                setTimeout(() =>  formRef.current.reset(), 3000)
                 setLoading(false)
+                setTimeout(() => formRef.current?.reset(), 3000)
             })
     }
+
     return (<>
-        <NavBar login={login} setLogin={setLogin}></NavBar>
-        <div>
-            <section className="bg-gray-50">
-                <div className="flex flex-col items-center justify-center px-6 sm:py-8 py-20 my-24 sm:my-0 mx-auto md:h-screen lg:py-0">
-                    <div className='flex justify-center max-w-xl'>
-                        {alert}
-                    </div>
-                    <div className=" bg-white rounded-lg shadow  md:mt-0 sm:max-w-md xl:p-0  ">
-                        <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-                            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl ">
-                                Create and account
-                            </h1>
-                            <form ref={formRef} onSubmit={formHandler} className="space-y-4 md:space-y-6" action={`${import.meta.env.VITE_BACKEND}/signup`} method='post'>
-                                <div className='flex justify-around gap-2 '>
-                                    <div>
-                                        <label for="first" className="block mb-2 text-sm font-medium text-gray-900">First Name</label>
-                                        <input ref={firstNameRef} type="text" name="first" id="first" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-zinc-600 focus:border-zinc-600 block w-full p-2.5      " placeholder="John" required={true} />
-                                    </div>
-                                    <div>
-                                        <label for="last" className="block mb-2 text-sm font-medium text-gray-900">Last Name</label>
-                                        <input ref={lastNameRef} type="text" name="last" id="last" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-zinc-600 focus:border-zinc-600 block w-full p-2.5      " placeholder="Doe" required="true" />
-                                    </div>
+        <NavBar login={login} setLogin={setLogin} />
+        <section className="bg-gray-50 min-h-screen">
+            <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+                <div className="flex justify-center max-w-xl">
+                    {alert}
+                </div>
+                <div className="w-full bg-white rounded-xl shadow-lg sm:max-w-md xl:p-0">
+                    <div className="p-8 space-y-6">
+                        <h1 className="text-2xl font-bold text-gray-900">
+                            Create an account
+                        </h1>
+                        <p className="text-sm text-gray-500 -mt-2">Get started with your free account today</p>
+                        <form ref={formRef} onSubmit={formHandler} className="space-y-5" noValidate>
+                            <div className="flex gap-3">
+                                <div className="flex-1">
+                                    <label htmlFor="first" className="block mb-2 text-sm font-medium text-gray-900">
+                                        First Name
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="first"
+                                        id="first"
+                                        autoComplete="given-name"
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 transition-colors"
+                                        placeholder="John"
+                                        required
+                                    />
                                 </div>
-                                <div>
-                                    <label for="email" className="block mb-2 text-sm font-medium text-gray-900 ">Your email</label>
-                                    <input ref={emailRef} type="email" name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-zinc-600 focus:border-zinc-600 block w-full p-2.5      " placeholder="name@company.com" required="true" />
+                                <div className="flex-1">
+                                    <label htmlFor="last" className="block mb-2 text-sm font-medium text-gray-900">
+                                        Last Name
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="last"
+                                        id="last"
+                                        autoComplete="family-name"
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 transition-colors"
+                                        placeholder="Doe"
+                                        required
+                                    />
                                 </div>
-                                <div>
-                                    <label for="password" className="block mb-2 text-sm font-medium text-gray-900 ">Password</label>
-                                    <input ref={passwordRef} type="password" name="password" id="password" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-zinc-600 focus:border-zinc-600 block w-full p-2.5      " minlength="8" maxlength="20" required="true" />
+                            </div>
+                            <div>
+                                <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900">
+                                    Email address
+                                </label>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    id="email"
+                                    autoComplete="email"
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 transition-colors"
+                                    placeholder="name@company.com"
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900">
+                                    Password
+                                </label>
+                                <div className="relative">
+                                    <input
+                                        type={showPassword ? "text" : "password"}
+                                        name="password"
+                                        id="password"
+                                        autoComplete="new-password"
+                                        placeholder="••••••••"
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 pr-10 transition-colors"
+                                        minLength={8}
+                                        maxLength={20}
+                                        required
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPassword((prev) => !prev)}
+                                        className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+                                        aria-label={showPassword ? "Hide password" : "Show password"}
+                                    >
+                                        {showPassword ? (
+                                            <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L6.59 6.59m7.532 7.532l3.29 3.29M3 3l18 18" />
+                                            </svg>
+                                        ) : (
+                                            <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                            </svg>
+                                        )}
+                                    </button>
                                 </div>
-                                <div className="flex items-start">
-                                    <div className="flex items-center h-5">
-                                        <input id="terms" aria-describedby="terms" type="checkbox" className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-zinc-300    " required="true" />
-                                    </div>
-                                    <div className="ml-3 text-sm">
-                                        <label for="terms" className="font-light text-gray-500 ">I accept the <a className="font-medium text-zinc-600 hover:underline " href="/terms">Terms and Conditions</a></label>
-                                    </div>
+                                <p className="mt-1 text-xs text-gray-400">Must be 8-20 characters</p>
+                            </div>
+                            <div className="flex items-start">
+                                <div className="flex items-center h-5">
+                                    <input
+                                        id="terms"
+                                        type="checkbox"
+                                        className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-purple-500 focus:ring-2"
+                                        required
+                                    />
                                 </div>
-                                {/* <button type="submit" className="w-full text-white bg-zinc-600 hover:bg-zinc-700 focus:ring-4 focus:outline-none focus:ring-zinc-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center   ">Create an account</button> */}
-                                <button type="submit" className={`justify-center items-center flex w-full text-white ${loading ? "bg-zinc-300 hover:bg-zinc-400" : "bg-zinc-600 hover:bg-zinc-700"} focus:ring-4 focus:outline-none focus:ring-zinc-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center`}>
-                                    <button type="submit" className="">Create an account</button>
-                                    <div className={`border-gray-300 ${loading ? "" : "hidden"} ml-2  animate-spin rounded-full border-2 w-4 h-4 border-r-zinc-400`} />
-                                </button>
-                                <p className="text-sm font-light text-gray-500 ">
-                                    Already have an account? <a href="/login" className="font-medium text-zinc-600 hover:underline ">Login here</a>
-                                </p>
-                            </form>
-                        </div>
+                                <div className="ml-3 text-sm">
+                                    <label htmlFor="terms" className="font-light text-gray-500">
+                                        I accept the{' '}
+                                        <a className="font-medium text-purple-600 hover:underline" href="/terms">
+                                            Terms and Conditions
+                                        </a>
+                                    </label>
+                                </div>
+                            </div>
+                            <button
+                                type="submit"
+                                disabled={loading}
+                                className={`w-full flex items-center justify-center gap-2 text-white font-medium rounded-lg text-sm px-5 py-2.5 transition-colors ${loading
+                                        ? "bg-gray-300 cursor-not-allowed"
+                                        : "bg-gray-900 hover:bg-gray-800 focus:ring-4 focus:ring-gray-300"
+                                    }`}
+                            >
+                                {loading ? (
+                                    <>
+                                        <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24" fill="none">
+                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                                        </svg>
+                                        Creating account...
+                                    </>
+                                ) : "Create an account"}
+                            </button>
+                            <p className="text-sm font-light text-gray-500 text-center">
+                                Already have an account?{' '}
+                                <a href="/login" className="font-medium text-purple-600 hover:underline">
+                                    Login here
+                                </a>
+                            </p>
+                        </form>
                     </div>
                 </div>
-            </section>
-        </div>
-        <Footer></Footer>
+            </div>
+        </section>
+        <Footer />
     </>)
 }

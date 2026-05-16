@@ -1,54 +1,74 @@
 import { load } from '@cashfreepayments/cashfree-js';
+
 export default async function CashFree(setLoading, setAlert, productId = 1) {
     setLoading(true)
-    const session = await fetch(import.meta.env.VITE_BACKEND + "/auth/pay/order", {
-        method: 'post',
-        body: JSON.stringify({ productId: productId }),
-        headers: {
-            authorization: localStorage.getItem('token')
+    
+    try {
+        const sessionResponse = await fetch(import.meta.env.VITE_BACKEND + "/auth/pay/order", {
+            method: 'post',
+            body: JSON.stringify({ productId: productId }),
+            headers: {
+                authorization: localStorage.getItem('token'),
+                'Content-Type': 'application/json'
+            }
+        })
+        
+        if (!sessionResponse.ok) {
+            throw new Error('Failed to create payment session')
         }
-    })
-        .then((res) => res.json())
-        .then((res) => res.res.payment_session_id)
-    const cashfree = await load({
-        mode: "production" //or production
-    });
-    let checkoutOptions = {
-        paymentSessionId: session,
-        redirectTarget: "_modal"
-    };
+        
+        const sessionData = await sessionResponse.json()
+        const sessionId = sessionData.res?.payment_session_id
+        
+        if (!sessionId) {
+            throw new Error('Invalid payment session')
+        }
 
-    cashfree.checkout(checkoutOptions).then((result) => {
-        if (result.error) {
-            setAlert(<div className="p-4 my-4 text-sm text-red-800 rounded-lg bg-red-50  " role="alert">
-                <span className="font-medium">Error: </span>Something went wrong. Please try again later
-            </div>)
-            console.log("User has closed the popup or there is some payment error, Check for Payment Status");
-            console.log(result.error);
-        }
-        if (result.redirect) {
-            setAlert(
-                <div className="p-4 my-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 " role="alert">
-                    <span className="font-medium">Warning: </span> {res.status}
-                </div>
-            )
-            // This will be true when the payment redirection page couldnt be opened in the same window
-            // This is an exceptional case only when the page is opened inside an inAppBrowser
-            // In this case the customer will be redirected to return url once payment is completed
-            console.log("Payment will be redirected");
-        }
-        if (result.paymentDetails) {
-            setAlert(
-                <div className="p-4 my-4 text-sm text-green-800 rounded-lg bg-green-100 " role="alert">
-                    <span className="font-medium">Success: </span> Payment successful, You order will be available in you <a className='underline font-semibold' href="/dashboard">dashboard</a> or will be proceessed under 24 hours.
-                </div>
-            )
-            // This will be called whenever the payment is completed irrespective of transaction status
-            console.log("Payment has been completed, Check for Payment Status");
-            console.log(result.paymentDetails.paymentMessage);
-        }
+        const cashfree = await load({
+            mode: import.meta.env.VITE_CASHFREE_MODE || "production" // Use environment variable
+        });
+
+        let checkoutOptions = {
+            paymentSessionId: sessionId,
+            redirectTarget: "_modal"
+        };
+
+        cashfree.checkout(checkoutOptions).then((result) => {
+            if (result.error) {
+                setAlert({
+                    type: "error",
+                    message: "Something went wrong. Please try again later"
+                })
+                console.log("Payment error:", result.error);
+            }
+            if (result.redirect) {
+                setAlert({
+                    type: "warning",
+                    message: "Payment will be redirected"
+                })
+                console.log("Payment will be redirected");
+            }
+            if (result.paymentDetails) {
+                setAlert({
+                    type: "success",
+                    message: "Payment successful! Your order will be available in your dashboard or will be processed within 24 hours."
+                })
+                console.log("Payment completed:", result.paymentDetails.paymentMessage);
+            }
+        }).catch(error => {
+            setAlert({
+                type: "error",
+                message: "Payment processing error. Please try again."
+            })
+            console.error("Checkout error:", error);
+        });
+    } catch (error) {
+        console.error("CashFree error:", error)
+        setAlert({
+            type: "error",
+            message: "Something went wrong. Please try again later"
+        })
+    } finally {
         setLoading(false)
-    });
-
-    return
+    }
 }

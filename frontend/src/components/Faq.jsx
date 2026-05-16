@@ -1,83 +1,81 @@
-export default function Faq() {
-    return (<>
-        <div
-            className="relative w-11/12 sm:w-full  px-6 pt-10 pb-8 my-8 shadow-xl ring-1 ring-gray-900/5 mx-auto sm:max-w-xl sm:rounded-lg sm:px-10">
-            <div className="mx-auto px-5">
-                <div className="flex flex-col items-center">
-                    <h2 className="mt-5 text-center text-3xl font-bold tracking-tight md:text-5xl">FAQ</h2>
-                    <p className="mt-3 text-lg text-neutral-500 md:text-xl">Frequenty asked questions
+import { useState } from "react"
 
+const faqs = [
+    {
+        question: "How does the billing work?",
+        answer: "We offer one-time payment solutions for our SaaS templates. For our custom service plans, we price according to the scope of work on each project. Payment is typically made through UPI, bank transfer, or wallets via our secure CashFree payment gateway."
+    },
+    {
+        question: "Can I get a refund?",
+        answer: "Refunds are considered on a case-by-case basis within 3 days of purchase. You can read our full refund policy or contact us for specific cases."
+    },
+    {
+        question: "How does the process work?",
+        answer: "It's simple! Browse our Explore section to find the right template for your needs, purchase it, and you'll receive the source code via email or through your dashboard. For custom projects, contact us and we'll get back to you with a detailed proposal."
+    },
+    {
+        question: "Do I get the source code?",
+        answer: "Yes! Every template purchase includes full, unobfuscated source code. You'll receive it via email or can download it directly from your dashboard. The code is yours to use, modify, and deploy as needed."
+    },
+    {
+        question: "What tech stack is used?",
+        answer: "Our frontend kits use React, Vite, TailwindCSS, and React Router. Backend kits use Cloudflare Workers, Hono.js, Prisma ORM, and Neon PostgreSQL. Everything is TypeScript-ready and production-tested."
+    },
+    {
+        question: "Do you offer support after purchase?",
+        answer: "Yes! Each template comes with 6 months of premium support. You can reach us via email at support@codekit.me for any questions or issues related to your purchased templates."
+    }
+]
+
+export default function Faq() {
+    const [openIndex, setOpenIndex] = useState(null)
+
+    return (
+        <section className="py-20 px-4 bg-white" id="faq" aria-labelledby="faq-heading">
+            <div className="max-w-3xl mx-auto">
+                <div className="text-center mb-12">
+                    <h2 id="faq-heading" className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900">
+                        Frequently Asked Questions
+                    </h2>
+                    <p className="mt-4 text-lg text-gray-600">
+                        Everything you need to know about our products and services.
                     </p>
                 </div>
-                <div className="mx-auto mt-8 grid max-w-xl divide-y divide-neutral-200">
-                    <div className="py-5">
-                        <details className="group">
-                            <summary className="flex cursor-pointer list-none items-center justify-between font-medium">
-                                <span> How does the billing work?</span>
-                                <span className="transition group-open:rotate-180">
-                                    <svg fill="none" height="24" shapeRendering="geometricPrecision"
-                                        stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"
-                                        strokeWidth="1.5" viewBox="0 0 24 24" width="24">
-                                        <path d="M6 9l6 6 6-6"></path>
-                                    </svg>
-                                </span>
-                            </summary>
-                            <p className="group-open:animate-fadeIn mt-3 text-neutral-600">We offers a onetime payment solutions for respective SaaS templates, It may vary for our custome service plan where we price according to the work done on the project. Payment is typically made through UPI or Wallets
-                            </p>
-                        </details>
-                    </div>
-                    <div className="py-5">
-                        <details className="group">
-                            <summary className="flex cursor-pointer list-none items-center justify-between font-medium">
-                                <span> Can I get a refund for my subscription?</span>
-                                <span className="transition group-open:rotate-180">
-                                    <svg fill="none" height="24" shapeRendering="geometricPrecision"
-                                        stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"
-                                        strokeWidth="1.5" viewBox="0 0 24 24" width="24">
-                                        <path d="M6 9l6 6 6-6"></path>
-                                    </svg>
-                                </span>
-                            </summary>
-                            <p className="group-open:animate-fadeIn mt-3 text-neutral-600">Refunds for
-                                our custom freelance services may be considered on a
-                                case-by-case basis.You can check more about it <a className="text-blue-800 hover:underline" href="/refund">Refund policy</a>
-                            </p>
-                        </details>
-                    </div>
-                    <div className="py-5">
-                        <details className="group">
-                            <summary className="flex cursor-pointer list-none items-center justify-between font-medium">
-                                <span>How the process looks like</span>
-                                <span className="transition group-open:rotate-180">
-                                    <svg fill="none" height="24" shapeRendering="geometricPrecision"
-                                        stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"
-                                        strokeWidth="1.5" viewBox="0 0 24 24" width="24">
-                                        <path d="M6 9l6 6 6-6"></path>
-                                    </svg>
-                                </span>
-                            </summary>
-                            <p className="group-open:animate-fadeIn mt-3 text-neutral-600">The process is simple, you can choose variety of templates from our explore section, then you can buy the template and get the source code. For custom service you can contact us and we will get back to you with the details.
-                            </p>
-                        </details>
-                    </div>
-                    <div className="py-5">
-                        <details className="group">
-                            <summary className="flex cursor-pointer list-none items-center justify-between font-medium">
-                                <span>Can I get Source Code of the templates</span>
-                                <span className="transition group-open:rotate-180">
-                                    <svg fill="none" height="24" shapeRendering="geometricPrecision"
-                                        stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"
-                                        strokeWidth="1.5" viewBox="0 0 24 24" width="24">
-                                        <path d="M6 9l6 6 6-6"></path>
-                                    </svg>
-                                </span>
-                            </summary>
-                            <p className="group-open:animate-fadeIn mt-3 text-neutral-600">Yes, you can get the source code of the templates , when you buy it from us. Source code will be provided via email or you can download it from the dashboard.
-                            </p>
-                        </details>
-                    </div>
+                <div className="space-y-3">
+                    {faqs.map((faq, index) => (
+                        <div key={index} className="border border-gray-200 rounded-xl overflow-hidden">
+                            <button
+                                onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                                className="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-gray-50 transition-colors"
+                                aria-expanded={openIndex === index}
+                            >
+                                <span className="font-medium text-gray-900 pr-4">{faq.question}</span>
+                                <svg
+                                    className={`w-5 h-5 text-gray-500 flex-shrink-0 transition-transform duration-200 ${openIndex === index ? "rotate-180" : ""}`}
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            {openIndex === index && (
+                                <div className="px-6 pb-5 text-gray-600 leading-relaxed animate-fade-in">
+                                    {faq.answer}
+                                </div>
+                            )}
+                        </div>
+                    ))}
+                </div>
+                <div className="mt-12 text-center">
+                    <p className="text-gray-600">
+                        Still have questions?{' '}
+                        <a href="/contact" className="text-purple-600 font-medium hover:underline">
+                            Contact us
+                        </a>
+                    </p>
                 </div>
             </div>
-        </div>
-    </>)
+        </section>
+    )
 }

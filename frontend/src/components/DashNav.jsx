@@ -1,16 +1,27 @@
-import { useState } from "react"
+export default function DashNav({ active, setActive }) {
+    const navItems = [
+        { id: "profile", label: "Profile" },
+        { id: "orders", label: "Orders" }
+    ]
 
-export default function DashNav({active , setActive}) {
-    return (<>
-        <div className="flex justify-center sm:justify-normal sm:flex-col sm:gap-2">
-            <button onClick={() => {
-                // setCard(cardData.fullstack)
-                setActive("profile")
-            }} className={`px-10 p-4  border-r border-gray-200  hover:text-gray-700  ${active == "profile" ? "bg-gray-100" : "hover:bg-gray-50"}`}>Profile</button>
-            <button onClick={() => {
-                // setCard(cardData.fullstack)
-                setActive("orders")
-            }} className={`px-10 p-4  sm:border-r border-gray-200  hover:text-gray-700  ${active == "orders" ? "bg-gray-100" : "hover:bg-gray-50"}`}>Orders</button>
+    return (
+        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden" role="tablist">
+            {navItems.map((item) => (
+                <button
+                    key={item.id}
+                    onClick={() => setActive(item.id)}
+                    className={`w-full px-4 py-3 text-left text-sm font-medium transition-colors ${
+                        active === item.id
+                            ? "bg-purple-50 text-purple-700 border-l-4 border-purple-500"
+                            : "text-gray-700 hover:bg-gray-50"
+                    }`}
+                    role="tab"
+                    aria-selected={active === item.id}
+                    id={`tab-${item.id}`}
+                >
+                    {item.label}
+                </button>
+            ))}
         </div>
-    </>)
+    )
 }

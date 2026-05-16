@@ -11,3 +11,4 @@ minify = true
 #CASHFREE_LINK = "https://api.cashfree.com/pg"
 #CASHFREE_CLIENT_ID = ""
 #CASHFREE_CLIENT_SECRET = ""
+BCRYPT_ROUNDS = "10"

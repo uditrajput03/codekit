@@ -7,11 +7,13 @@ import { logger } from 'hono/logger'
 import pay from './payment'
 import { webhook } from './webhook'
 import pass from './password'
+import bcrypt from 'bcrypt'
 
 type Bindings = {
   JWT_SECRET: string
   DATABASE_URL: string
   BOT_TOKEN: string
+  BCRYPT_ROUNDS?: string
 }
 type Variables = {
   prisma: PrismaClient
@@ -19,15 +21,21 @@ type Variables = {
 
 const app = new Hono<{ Bindings: Bindings, Variables: Variables }>()
 app.use(logger())
-app.use(cors())
+app.use(cors({
+  origin: ['https://codekit.me', 'http://localhost:5173', 'http://localhost:4173'],
+  allowHeaders: ['Content-Type', 'Authorization'],
+  allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+}))
 app.use(getPrisma)
 app.use('/auth/*', authCheck)
 app.route('/webhook', webhook)
 app.route('/auth/pay', pay)
 app.route('/password', pass)
+
 app.get('/', async (c: any) => {
   return c.text(`Hello Codekit`)
 })
+
 app.get('/auth/profile', async (c) => {
   let jwtData = c.get('jwtPayload')
   const prisma = c.var.prisma
@@ -46,12 +54,13 @@ app.get('/auth/profile', async (c) => {
     })
     return c.json(profile)
   } catch (error) {
+    console.error("Profile fetch error:", error)
     return c.json({
-      status: "Somthing went wrong"
-    }, 400)
+      status: "Something went wrong"
+    }, 500)
   }
-}
-)
+})
+
 app.get('/auth/orders', async (c) => {
   let jwtData = c.get('jwtPayload')
   const prisma = c.var.prisma
@@ -63,9 +72,9 @@ app.get('/auth/orders', async (c) => {
       },
       select: {
         id: true,
-        createdAt:true,
-        product:{
-          select:{
+        createdAt: true,
+        product: {
+          select: {
             title: true
           }
         },
@@ -74,12 +83,13 @@ app.get('/auth/orders', async (c) => {
     })
     return c.json(orders)
   } catch (error) {
+    console.error("Orders fetch error:", error)
     return c.json({
-      status: "Somthing went wrong"
-    }, 400)
+      status: "Something went wrong"
+    }, 500)
   }
-}
-)
+})
+
 app.get('/auth', async (c) => {
   let jwtData = c.get('jwtPayload')
   return c.json(jwtData)
@@ -89,113 +99,169 @@ app.post('/login', async (c) => {
   const body: any = await c.req.parseBody()
   const prisma = c.var.prisma
 
-  console.log(body);
+  // Input validation
+  if (!body.email || !body.password) {
+    return c.json({
+      status: "Email and password are required"
+    }, 400)
+  }
+
   try {
-    let out = await prisma.user.findUnique({
+    let user = await prisma.user.findUnique({
       where: {
         email: body.email
       }
     })
-    if (out != null) {
-      if (out.password == body.password) {
-        const jwt = await sign({ email: out.email, id: out.id }, c.env.JWT_SECRET)
+
+    if (user !== null) {
+      // Compare hashed password
+      const isValidPassword = await bcrypt.compare(body.password, user.password)
+      
+      if (isValidPassword) {
+        const jwt = await sign({ email: user.email, id: user.id }, c.env.JWT_SECRET)
         return c.json({
           status: "Logged In",
-          id: out.id,
+          id: user.id,
           token: jwt
         })
-      }
-      else {
+      } else {
         return c.json({
           status: "Invalid password",
-        }, 400)
-
+        }, 401)
       }
+    } else {
+      return c.json({
+        status: "User not found"
+      }, 401)
     }
+  } catch (error) {
+    console.error("Login error:", error)
     return c.json({
-      status: "User not exists"
-    })
+      status: "Something went wrong"
+    }, 500)
   }
-  catch (error) {
-    return c.json({
-      status: "Somthing went wrong"
-    }, 400)
-  }
-
 })
 
 app.post('/signup', async (c) => {
   const body: any = await c.req.parseBody()
   const prisma = c.var.prisma
-  console.log(body);
+  
+  // Input validation
+  if (!body.first || !body.last || !body.email || !body.password) {
+    return c.json({
+      status: "All fields are required"
+    }, 400)
+  }
+  
+  // Validate email format
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  if (!emailRegex.test(body.email)) {
+    return c.json({
+      status: "Invalid email format"
+    }, 400)
+  }
+  
+  // Validate password length
+  if (body.password.length < 8 || body.password.length > 20) {
+    return c.json({
+      status: "Password must be between 8 and 20 characters"
+    }, 400)
+  }
 
   try {
-    let out = await prisma.user.create({
+    // Hash the password before storing
+    const rounds = parseInt(c.env.BCRYPT_ROUNDS || '10')
+    const hashedPassword = await bcrypt.hash(body.password, rounds)
+    
+    let user = await prisma.user.create({
       data: {
         first: body.first,
         last: body.last,
         email: body.email,
-        password: body.password
+        password: hashedPassword
       }
     })
-    console.log(out);
 
-    const jwt = await sign({ email: out.email, id: out.id }, c.env.JWT_SECRET)
+    const jwt = await sign({ email: user.email, id: user.id }, c.env.JWT_SECRET)
     return c.json({
-      status: "Account Created successfully",
-      id: out.id,
+      status: "Account created successfully",
+      id: user.id,
       token: jwt
     })
   } catch (error: any) {
-    if (error.code = "P2002") {
+    if (error.code === "P2002") { // Unique constraint violation
       return c.json({
-        status: "Account Already exist"
-      })
+        status: "Account already exists"
+      }, 409)
     }
-    console.log(error);
+    console.error("Signup error:", error)
     return c.json({
-      status: "Somthing went wrong"
-    }, 400)
+      status: "Something went wrong"
+    }, 500)
   }
-
 })
 
-app.post('newsletter', async (c) => {
+app.post('/newsletter', async (c) => {
   const prisma = c.var.prisma
   try {
-    let inputEmail = await c.req.json()
-    let a = await prisma.newsLetter.create({
+    let inputJson = await c.req.json()
+    
+    // Validate input
+    if (!inputJson.email) {
+      return c.json({
+        status: "Email is required"
+      }, 400)
+    }
+    
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(inputJson.email)) {
+      return c.json({
+        status: "Invalid email format"
+      }, 400)
+    }
+    
+    let newsletterEntry = await prisma.newsLetter.create({
       data: {
-        email: inputEmail.email
+        email: inputJson.email
       }
     })
     return c.json({
-      status: "success"
-    })
+      status: "Subscribed successfully"
+    }, 200)
   } catch (error: any) {
-    if (error.code = "P2002") {
+    if (error.code === "P2002") { // Unique constraint violation
       return c.json({
-        status: "Already exist"
-      },201)
+        status: "Already subscribed"
+      }, 201)
     }
-    console.log(error);
+    console.error("Newsletter error:", error)
     return c.json({
       status: "Something went wrong"
-    }, 400)
+    }, 500)
   }
 })
 
 app.post('/contact', async c => {
-  // const body = await c.req.json()
   const body = await c.req.parseBody()
-  try {
-  let data = {
-    chat_id: "-1002045554223",
-    text: `Source: Codekit
-email: ${body.email}
-subject: ${body.subject}
-message: ${body.message}`
+  
+  // Input validation
+  if (!body.email || !body.subject || !body.message) {
+    return c.text("All fields (email, subject, message) are required", 400)
   }
+  
+  // Validate email format
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  if (!emailRegex.test(body.email)) {
+    return c.text("Invalid email format", 400)
+  }
+  
+  try {
+    let data = {
+      chat_id: "-1002045554223",
+      text: `Source: Codekit\nEmail: ${body.email}\nSubject: ${body.subject}\nMessage: ${body.message}`
+    }
+    
     let telegram: any = await fetch(`https://api.telegram.org/bot${c.env.BOT_TOKEN}/sendMessage`, {
       method: "post",
       headers: {
@@ -203,41 +269,36 @@ message: ${body.message}`
       },
       body: JSON.stringify(data)
     }).then(res => res.json()).then(res => res)
-    if (telegram.ok == true) {
+    
+    if (telegram.ok === true) {
       return c.json({
-        id: "id"
+        id: "message_sent"
       }, 200)
-    }
-    else {
+    } else {
       return c.text("Something went wrong", 400)
     }
   } catch (error) {
-    return c.text("Something went wrong", 400)
+    console.error("Contact error:", error)
+    return c.text("Something went wrong", 500)
   }
 })
 
-app.get('/verify/:token', async c => {})
-
-
-// app.post('/create' , async (c) => {
-//   let body = await c.req.json()
-//   const prisma = c.var.prisma
-//   try {
-//     let productId = await prisma.product.create({
-//       data :{
-//         title: body.title,
-//         description: body.description,
-//         price: body.price,
-//         published: true
-//       }
-//     })
-//     return c.json({
-//       status: productId
-//     })
-
-//   } catch (error) {
-//     console.log(error);
-//   }
-// })
+app.get('/verify/:token', async c => {
+  try {
+    const token = c.req.param('token')
+    const decoded = await verify(token, c.env.JWT_SECRET)
+    const userId = (decoded as any).id
+    
+    const prisma = c.var.prisma
+    await prisma.user.update({
+      where: { id: userId },
+      data: { verified: true }
+    })
+    
+    return c.json({ status: "Email verified successfully" })
+  } catch (error) {
+    return c.json({ status: "Invalid verification token" }, 400)
+  }
+})
 
 export default app

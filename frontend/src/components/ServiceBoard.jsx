@@ -1,12 +1,21 @@
 import ServiceCard from "./ServiceCard"
+
 export default function ServiceBoard() {
-    return (<>
-        <div className="flex justify-center ">
-            <div className="flex flex-col m-auto items-center sm:min-h-screen -mb-12 text-center gap-7">
-                <h2 className=" text-2xl tracking-tight font-bold text-gray-900 sm:text-4xl">Our Services</h2>
-                <p className="px-2 text-center text-lg leading-6 text-gray-600 mb-7 ">Give unique and custom touch to you web app by out services and solutions.</p>
-                <ServiceCard></ServiceCard>
+    return (
+        <section className="py-20 px-4 bg-gray-50" id="services" aria-labelledby="services-heading">
+            <div className="max-w-7xl mx-auto">
+                <div className="text-center mb-12">
+                    <h2 id="services-heading" className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900">
+                        Our Services
+                    </h2>
+                    <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+                        Give a unique and custom touch to your web app with our services and solutions.
+                    </p>
+                </div>
+                <div className="flex justify-center">
+                    <ServiceCard />
+                </div>
             </div>
-        </div>
-    </>)
+        </section>
+    )
 }

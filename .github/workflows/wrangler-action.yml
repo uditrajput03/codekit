@@ -11,24 +11,55 @@ jobs:
     name: Deploy
     steps:
       - uses: actions/checkout@v4
-      - name: Deploy
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Backend Dependencies
+        working-directory: ./backend
+        run: npm ci
+
+      - name: Generate Prisma Client
+        working-directory: ./backend
+        run: npx prisma generate
+
+      - name: Deploy Backend
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          workingDirectory: "backend"
+          workingDirectory: backend
           secrets: |
             DATABASE_URL
             JWT_SECRET
             RESEND_API
             BOT_TOKEN
-            CASHFREE_LINK
             CASHFREE_CLIENT_ID
             CASHFREE_CLIENT_SECRET
+            BCRYPT_ROUNDS
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           RESEND_API: ${{ secrets.RESEND_API }}
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-          CASHFREE_LINK: ${{ vars.CASHFREE_LINK }}
-          CASHFREE_CLIENT_ID: ${{ vars.CASHFREE_CLIENT_ID }}
+          CASHFREE_CLIENT_ID: ${{ secrets.CASHFREE_CLIENT_ID }}
           CASHFREE_CLIENT_SECRET: ${{ secrets.CASHFREE_CLIENT_SECRET }}
+          BCRYPT_ROUNDS: ${{ secrets.BCRYPT_ROUNDS }}
+
+      - name: Install Frontend Dependencies
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Build Frontend
+        working-directory: ./frontend
+        run: npm run build
+        env:
+          VITE_BACKEND: ${{ secrets.VITE_BACKEND }}
+          VITE_CASHFREE_MODE: ${{ secrets.VITE_CASHFREE_MODE }}
+
+      - name: Deploy Frontend to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          command: pages deploy frontend/dist --project-name=codekit-frontend

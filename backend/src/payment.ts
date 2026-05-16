@@ -3,6 +3,7 @@ import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import { authCheck, getPrisma } from "./middleware";
 import { PrismaClient } from "@prisma/client/extension";
+import bcrypt from 'bcrypt'
 
 
 type Variables = {
@@ -17,7 +18,11 @@ type Bindings = {
 
 const pay = new Hono<{Bindings:Bindings , Variables: Variables }>()
 pay.use(logger())
-pay.use(cors())
+pay.use(cors({
+  origin: ['https://codekit.me', 'http://localhost:5173', 'http://localhost:4173'],
+  allowHeaders: ['Content-Type', 'Authorization'],
+  allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+}))
 pay.use(authCheck)
 pay.use(getPrisma)
 pay.get('/', async (c: any) => {
@@ -27,6 +32,14 @@ pay.post('/order', async (c) => {
     let body = await c.req.json()
     let jwtData = c.get('jwtPayload')
     console.log(jwtData);
+    
+    // Validate input
+    if (!body.productId) {
+        return c.json({
+            status: "Product ID is required"
+        }, 400)
+    }
+
     try {
         const prisma = c.var.prisma
         let product = await prisma.product.findUnique({
@@ -34,7 +47,12 @@ pay.post('/order', async (c) => {
                 id: body.productId
             }
         })
-        console.log(product);
+        
+        if (!product) {
+            return c.json({
+                status: "Product not found"
+            }, 404)
+        }
 
         let order = await prisma.orders.create({
             data: {
@@ -89,10 +107,10 @@ pay.post('/order', async (c) => {
             res
         })
     } catch (error) {
-        console.log(error);
+        console.error("Payment order creation error:", error);
         return c.json({
             status: "Something went wrong with payment gateway"
-        })
+        }, 500)
     }
 })
 
@@ -101,6 +119,14 @@ pay.post('/resend', async (c) => {
     const body: any = await c.req.json()
     const { orderId } = body
     const jwtPayload = await c.get('jwtPayload')
+    
+    // Validate input
+    if (!orderId) {
+        return c.json({
+            status: "Order ID is required"
+        }, 400)
+    }
+    
     try {
         let order = await prisma.orders.findUnique({
             where: {
@@ -108,13 +134,13 @@ pay.post('/resend', async (c) => {
             }
         })
         console.log(body, jwtPayload);
-        if (order != null) {
+        if (order !== null) {
             let url = `https://codekit.me/download/${orderId}`
             let mail = {
                 from: "CodeKit <support@codekit.me>",
                 to: jwtPayload.email,
                 subject: "Download Link",
-                text: `Click on the link to download ${url} \n Order details: ${JSON.stringify(order)}`
+                text: `Click on the link to download: ${url}\n\nOrder details: ${JSON.stringify(order)}`
             }
             let res = await fetch('https://api.resend.com/emails', {
                 method: 'POST',
@@ -126,11 +152,12 @@ pay.post('/resend', async (c) => {
             })
                 .then((res) => res)
                 .catch((error) => {
+                    console.error("Email sending error:", error)
                     return c.json({
                         status: "Something went wrong"
-                    }, 400)
+                    }, 500)
                 })
-            if (res.status == 200) {
+            if (res.status === 200) {
                 return c.json({
                     status: "Download link sent"
                 })
@@ -138,18 +165,19 @@ pay.post('/resend', async (c) => {
             else {
                 return c.json({
                     status: "Download link not sent"
-                }, 400)
+                }, 500)
             }
         }
         else {
             return c.json({
-                status: "Email not found"
-            }, 400)
+                status: "Order not found"
+            }, 404)
         }
     } catch (error) {
+        console.error("Resend email error:", error)
         return c.json({
-            status: "Somthing went wrong with the server"
-        }, 400)
+            status: "Something went wrong with the server"
+        }, 500)
     }
 })
 export default pay

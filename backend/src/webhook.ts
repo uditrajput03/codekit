@@ -10,12 +10,17 @@ type Variables = {
 
 export const webhook = new Hono<{ Variables: Variables }>()
 webhook.use(logger())
-webhook.use(cors())
+webhook.use(cors({
+  origin: ['https://codekit.me', 'https://api.codekit.me'], // Only allow from production
+  allowHeaders: ['Content-Type'],
+  allowMethods: ['POST', 'OPTIONS']
+}))
 webhook.use(getPrisma)
 webhook.post('/', async (c) => {
     const res = await c.req.json()
     const prisma = c.var.prisma
     try {
+        // Verify webhook authenticity here if needed
         const order = await prisma.orders.update({
             where: {
                 id: Number(res.data.order.order_id),
@@ -24,12 +29,12 @@ webhook.post('/', async (c) => {
             data: {
                 paid: res.data.payment.payment_amount,
                 paymentStatus: res.data.payment.payment_status,
-                completed: (res.data.payment.payment_status == "SUCCESS" ? true : false)
+                completed: (res.data.payment.payment_status === "SUCCESS" ? true : false)
             }
         })
         return c.json({ "ok":"ok" }, 200)
     } catch (error) {
-        return c.json({"status": "Something went wrong"} , 400)
+        console.error("Webhook error:", error)
+        return c.json({"status": "Something went wrong"}, 400)
     }
-
 })
